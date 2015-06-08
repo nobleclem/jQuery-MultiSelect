@@ -1,0 +1,68 @@
+.ms-options-wrap > button:focus,
+.ms-options-wrap > button {
+    position: relative;
+    width: 100%;
+    text-align: left;
+    border: 1px solid #aaa;
+    background-color: #fff;
+    padding: 5px 20px 5px 5px;
+    margin-top: 1px;
+    font-size: 13px;
+    color: #aaa;
+    outline: none;
+    white-space: nowrap;
+}
+
+.ms-options-wrap > button:after {
+    content: ' ';
+    height: 0;
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 0;
+    border: 6px solid rgba(0, 0, 0, 0);
+    border-top-color: #999;
+    margin-top: -3px;
+}
+
+.ms-options-wrap > ul {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: 1px;
+    background: white;
+    z-index: 2000;
+    border: 1px solid #aaa;
+}
+
+.ms-options-wrap > ul > li.optgroup {
+    padding: 5px;
+}
+.ms-options-wrap > ul > li.optgroup + li.optgroup {
+    border-top: 1px solid #aaa;
+}
+
+.ms-options-wrap > ul > li.optgroup .label {
+    padding: 5px 0 0 0;
+    font-weight: bold;
+}
+
+.ms-options-wrap > ul label {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding: 4px;
+    margin: 1px 0;
+}
+
+.ms-options-wrap > ul li.selected label,
+.ms-options-wrap > ul label:hover {
+    background-color: #efefef;
+}
+
+.ms-options-wrap > ul input[type="checkbox"] {
+    margin-right: 5px;
+    position: absolute;
+    left: 4px;
+    top: 6px;
+}
