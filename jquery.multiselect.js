@@ -275,8 +275,8 @@
                     );
                 }
 
-                if( idx === 0 ) {
-                    $(this).trigger('click').trigger('click');
+                if( $(this).is(':checked') ) {
+                    $(this).trigger('click');
                 }
             });
         });
