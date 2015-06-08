@@ -7,8 +7,8 @@
  * @Source: https://github.com/nobleclem/jQuery-MultiSelect
  * 
  * Usage:
- *     $('.scrollable').multiselect();
- *     $('.scrollable').multiselect({ placeholder: 'Select options' });
+ *     $('select[multiple]').multiselect();
+ *     $('select[multiple]').multiselect({ placeholder: 'Select options' });
  * 
  **/
 (function($){
