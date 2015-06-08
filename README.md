@@ -3,6 +3,9 @@ jQuery MultiSelect
 
 Turn a multiselect list into a nice and easy to use list with checkboxes.
 
+## Demo
+http://springstubbe.us/demos/jquery-multiselect/
+
 ## Usage
 ```
 $('select[multiple]').multiselect();
