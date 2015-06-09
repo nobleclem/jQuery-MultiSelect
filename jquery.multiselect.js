@@ -73,9 +73,10 @@
             }
 
             // add option container
-            $(this).after('<div class="ms-options-wrap"><button>None Selected</button><ul></ul></div>');
+            $(this).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div></div>');
             var placeholder = $(this).next('.ms-options-wrap').find('> button:first-child');
-            var optionsWrap = $(this).next('.ms-options-wrap').find('> ul');
+            var optionsWrap = $(this).next('.ms-options-wrap').find('> .ms-options');
+            var optionsList = optionsWrap.find('> ul');
             var hasOptGroup = $(this).find('optgroup').length ? true : false;
 
             var maxWidth = null;
@@ -91,22 +92,25 @@
                 optionsWrap.parent().css( 'position', 'relative' );
             }
 
-            var maxHeight = options.maxHeight;
-            if( maxHeight ) {
+            var maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+            if( options.maxHeight ) {
                 maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
                 maxHeight = maxHeight < options.minHeight ? options.minHeight : maxheight;
             }
 
+            maxHeight = maxHeight < options.minHeight ? options.minHeight : maxHeight;
+
             optionsWrap.css({
-                maxWidth: maxWidth,
-                maxHeight: ($(window).height() - optionsWrap.offset().top - 20),
-                overflow: 'auto'
+                maxWidth : maxWidth,
+                minHeight: options.minHeight,
+                maxHeight: maxHeight,
+                overflow : 'auto'
             }).hide();
-            
+
             // isolate options scroll
             // @source: https://github.com/nobleclem/jQuery-IsolatedScroll
             optionsWrap.bind( 'touchmove mousewheel DOMMouseScroll', function ( e ) {
-                if( !options.autoscroll || ($(this).outerHeight() < $(this)[0].scrollHeight) ) {
+                if( ($(this).outerHeight() < $(this)[0].scrollHeight) ) {
                     var e0 = e.originalEvent,
                         delta = e0.wheelDelta || -e0.detail;
 
@@ -120,20 +124,35 @@
             // hide options menus if click happens off of the list placeholder button
             $(window).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
-                    $('.ms-options-wrap > ul:visible').hide();
+                    $('.ms-options-wrap > .ms-options:visible').hide();
                 }
             });
 
             // disable button action
             placeholder.bind('mousedown',function(){
                 // hide other menus before showing this one
-                $('.ms-options-wrap > ul:visible').each(function(){
+                $('.ms-options-wrap > .ms-options:visible').each(function(){
                     if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
                         $(this).hide();
                     }
                 });
 
+                // show/hide options
                 optionsWrap.toggle();
+
+                // recalculate height
+                if( optionsWrap.is(':visible') ) {
+                    optionsWrap.css( 'maxHeight', '' );
+
+                    var maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+                    if( options.maxHeight ) {
+                        maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+                        maxHeight = maxHeight < options.minHeight ? options.minHeight : maxheight;
+                    }
+                    maxHeight = maxHeight < options.minHeight ? options.minHeight : maxHeight;
+
+                    optionsWrap.css( 'maxHeight', maxHeight );
+                }
             }).click(function( event ){ event.preventDefault(); });
 
             // add placeholder copy
@@ -143,7 +162,7 @@
 
             // hide native select list
             $(this).hide();
-            
+
             // add options to wrapper
             $(this).children().each(function(){
                 var container = $('<li></li>');
@@ -172,19 +191,19 @@
                     return true;
                 }
 
-                optionsWrap.append( container );
+                optionsList.append( container );
             });
-            
+
             // COLUMNIZE
             if( hasOptGroup ) {
                 // float non grouped options
-                optionsWrap.find('> li:not(.optgroup)').css({
+                optionsList.find('> li:not(.optgroup)').css({
                     float: 'left',
                     width: (100 / options.columns) +'%'
                 });
 
                 // add CSS3 column styles
-                optionsWrap.find('li.optgroup').css({
+                optionsList.find('li.optgroup').css({
                     clear: 'both'
                 }).find('> ul').css({
                     'column-count'        : options.columns,
@@ -197,7 +216,7 @@
 
                 // for crappy IE versions float grouped options
                 if( func.ieVersion() && func.ieVersion() < 10 ) {
-                    optionsWrap.find('li.optgroup > ul > li').css({
+                    optionsList.find('li.optgroup > ul > li').css({
                         float: 'left',
                         width: (100 / options.columns) +'%'
                     });
@@ -205,7 +224,7 @@
             }
             else {
                 // add CSS3 column styles
-                optionsWrap.css({
+                optionsList.css({
                     'column-count'        : options.columns,
                     'column-gap'          : 0,
                     '-webkit-column-count': options.columns,
@@ -216,13 +235,13 @@
 
                 // for crappy IE versions float grouped options
                 if( func.ieVersion() && func.ieVersion() < 10 ) {
-                    optionsWrap.find('> li').css({
+                    optionsList.find('> li').css({
                         float: 'left',
                         width: (100 / options.columns) +'%'
                     });
                 }
             }
-            
+
             // BIND SELECT ACTION
             optionsWrap.find('input[type="checkbox"]').click(function(){
                 $(this).closest( 'li' ).toggleClass( 'selected' );
@@ -243,8 +262,8 @@
                 // UPDATE PLACEHOLDER TEXT WITH OPTIONS SELECTED
                 placeholder.text( selOpts.join( ', ' ) );
                 var copy = placeholder.clone().css({
-                    display: 'inline',
-                    width: 'auto',
+                    display   : 'inline',
+                    width     : 'auto',
                     visibility: 'hidden'
                 }).appendTo( optionsWrap.parent() );
 
@@ -266,7 +285,7 @@
 
             }).each(function( idx ){
                 if( $(this).css('display').match(/block$/) ) {
-                    var checkboxWidth = $(this).width();
+                    var checkboxWidth = $(this).outerWidth();
                         checkboxWidth = checkboxWidth ? checkboxWidth : 15;
 
                     $(this).closest('label').css(
