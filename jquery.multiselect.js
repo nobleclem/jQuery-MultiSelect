@@ -116,7 +116,7 @@
 
                     if( ($(this).outerHeight() + $(this)[0].scrollTop) > $(this)[0].scrollHeight ) {
                         e.preventDefault();
-                        this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+                        this.scrollTop += ( delta < 0 ? 1 : -1 );
                     }
                 }
             });
