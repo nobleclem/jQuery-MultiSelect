@@ -73,7 +73,8 @@
             }
 
             // add option container
-            $(this).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div></div>');
+            $(this).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div><
+/div>');
             var placeholder = $(this).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(this).next('.ms-options-wrap').find('> .ms-options');
             var optionsList = optionsWrap.find('> ul');
@@ -255,7 +256,7 @@
 
                 // get selected options
                 var selOpts = [];
-                select.find('option:selected').each(function(){
+                select.find('option[selected="selected"]').each(function(){
                     selOpts.push( $(this).text() );
                 });
 
