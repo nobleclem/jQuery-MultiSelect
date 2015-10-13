@@ -15,3 +15,6 @@ $('select[multiple]').multiselect({
     placeholder: 'Select options'
 });
 ```
+
+### Todo
+* search/filtering of options
