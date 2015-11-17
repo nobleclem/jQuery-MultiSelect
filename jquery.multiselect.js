@@ -161,7 +161,7 @@
             }
 
             // hide native select list
-            //$(this).hide();
+            $(this).hide();
 
             // add options to wrapper
             $(this).children().each(function(){
