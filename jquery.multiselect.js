@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 1.0
+ * @Version: 1.1
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -161,7 +161,7 @@
             }
 
             // hide native select list
-            $(this).hide();
+            //$(this).hide();
 
             // add options to wrapper
             $(this).children().each(function(){
@@ -253,6 +253,23 @@
                     'selected', $(this).is(':checked')
                 ).closest('select').trigger('change');
 
+                updatePlaceholderText();
+            }).each(function( idx ){
+                if( $(this).css('display').match(/block$/) ) {
+                    var checkboxWidth = $(this).outerWidth();
+                        checkboxWidth = checkboxWidth ? checkboxWidth : 15;
+
+                    $(this).closest('label').css(
+                        'padding-left',
+                        (parseInt( $(this).closest('label').css('padding-left') ) * 2) + checkboxWidth
+                    );
+                }
+            });
+
+            // update selected placeholder text
+            var updatePlaceholderText = function(){
+                var select = optionsWrap.parent().prev();
+
                 // get selected options
                 var selOpts = [];
                 select.find('option[selected="selected"]').each(function(){
@@ -282,22 +299,9 @@
 
                 // remove dummy element
                 copy.remove();
+            };
 
-            }).each(function( idx ){
-                if( $(this).css('display').match(/block$/) ) {
-                    var checkboxWidth = $(this).outerWidth();
-                        checkboxWidth = checkboxWidth ? checkboxWidth : 15;
-
-                    $(this).closest('label').css(
-                        'padding-left',
-                        (parseInt( $(this).closest('label').css('padding-left') ) * 2) + checkboxWidth
-                    );
-                }
-
-                if( $(this).is(':checked') ) {
-                    $(this).trigger('click');
-                }
-            });
+            updatePlaceholderText();
         });
     };
 }(jQuery));
