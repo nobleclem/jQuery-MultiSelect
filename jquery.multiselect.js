@@ -73,7 +73,7 @@
         return this.each(function(){
             // make sure this is a select list and not loaded
             if( this.nodeName != 'SELECT' || $(this).hasClass('jqmsLoaded') ) {
-                return false;
+                return true;
             }
 
             // sanity check so we don't double load on a select element
