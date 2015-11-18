@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 1.2
+ * @Version: 1.3
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -71,10 +71,13 @@
 
         // menuize each list
         return this.each(function(){
-            // make sure this is a select list
-            if( this.nodeName != 'SELECT' ) {
+            // make sure this is a select list and not loaded
+            if( this.nodeName != 'SELECT' || $(this).hasClass('jqmsLoaded') ) {
                 return false;
             }
+
+            // sanity check so we don't double load on a select element
+            $(this).addClass('jqmsLoaded');
 
             // add option container
             $(this).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div></div>');
