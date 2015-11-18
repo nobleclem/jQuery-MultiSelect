@@ -16,6 +16,7 @@
     color: #aaa;
     outline: none;
     white-space: nowrap;
+    overflow: hidden;
 }
 
 .ms-options-wrap > button:after {
