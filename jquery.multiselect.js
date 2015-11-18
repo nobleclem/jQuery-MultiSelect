@@ -1,10 +1,13 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 1.1
+ * @Version: 1.2
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
  * @Source: https://github.com/nobleclem/jQuery-MultiSelect
+ * @Notes: If select list is hidden on page load use the jquery.actual plugin
+ *         to resolve issues with preselected items placeholder text
+ *         https://github.com/dreamerslab/jquery.actual
  * 
  * Usage:
  *     $('select[multiple]').multiselect();
@@ -21,6 +24,7 @@
             minHeight     : 200,   // minimum height of option overlay
             maxHeight     : null,  // maximum height of option overlay
             showCheckbox  : true,  // display the checkbox to the user
+            jqActualOpts  : {},    // options for jquery.actual
 
             // @NOTE: these are for future development
             minSelect     : false, // minimum number of items that can be selected
@@ -284,8 +288,12 @@
                     visibility: 'hidden'
                 }).appendTo( optionsWrap.parent() );
 
+                // if the jquery.actual plugin is loaded use it to get the widths
+                var copyWidth  = (typeof $.fn.actual !== 'undefined') ? copy.actual('width',options.jqActualOpts) : copy.width();
+                var placeWidth = (typeof $.fn.actual !== 'undefined') ? placeholder.actual('width',options.jqActualOpts) : placeholder.width();
+
                 // if copy is larger than button width use "# selected"
-                if( copy.width() > placeholder.width() ) {
+                if( copyWidth > placeWidth ) {
                     placeholder.text( selOpts.length +' selected' );
                 }
                 // if options selected then use those
