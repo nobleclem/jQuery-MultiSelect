@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 1.3
+ * @Version: 1.4
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -8,30 +8,35 @@
  * @Notes: If select list is hidden on page load use the jquery.actual plugin
  *         to resolve issues with preselected items placeholder text
  *         https://github.com/dreamerslab/jquery.actual
- * 
+ *
  * Usage:
  *     $('select[multiple]').multiselect();
  *     $('select[multiple]').multiselect({ placeholder: 'Select options' });
- * 
+ *
  **/
 (function($){
     var msCounter = 1;
     $.fn.multiselect = function( options ){
         var defaults = {
-            placeholder   : '',    // text to use in dummy input
-            columns       : 1,     // how many columns should be use to show options
-            maxWidth      : null,  // maximum width of option overlay (or selector)
+            placeholder   : 'Select options', // text to use in dummy input
+            columns       : 1,                // how many columns should be use to show options
+            search        : false,            // include option search box
+            // search filter options
+            searchOptions : {
+                default      : 'Search', // search input placeholder text
+                showOptGroups: false     // show option group titles if no options remaining
+            },
+            selectAll     : false, // add select all option
+            selectGroup   : false, // select entire optgroup
             minHeight     : 200,   // minimum height of option overlay
             maxHeight     : null,  // maximum height of option overlay
             showCheckbox  : true,  // display the checkbox to the user
             jqActualOpts  : {},    // options for jquery.actual
 
             // @NOTE: these are for future development
+            maxWidth      : null,  // maximum width of option overlay (or selector)
             minSelect     : false, // minimum number of items that can be selected
             maxSelect     : false, // maximum number of items that can be selected
-            groupSelect   : false, // select entire optgroup
-            selectAllText : false, // add select all option
-            searchOptions : false, // enable option search/filtering
         }
         options = $.extend( defaults, options );
 
@@ -47,6 +52,7 @@
                 );
 
                 if( $(option).attr( 'selected' ) ) {
+                    container.addClass('default');
                     container.addClass('selected');
                     container.find( 'input[type="checkbox"]' ).attr( 'checked', 'checked' );
                 }
@@ -167,6 +173,72 @@
                 placeholder.text( options.placeholder );
             }
 
+            // add search box
+            if( options.search ) {
+                optionsList.before('<div class="ms-search"><input type="text" value="" placeholder="'+ options.searchOptions.default +'" /></div>');
+
+                var search = optionsWrap.find('.ms-search input');
+                search.on('keyup', function(){
+                    optionsList.find('li:not(.optgroup)').each(function(){
+                        var optText = $(this).text();
+
+                        if( optText.toLowerCase().indexOf( search.val().toLowerCase() ) > -1 ) {
+                            $(this).show();
+                        }
+                        // don't hide selected items
+                        else if( !$(this).hasClass('selected') ) {
+                            $(this).hide();
+                        }
+
+                        if( !options.searchOptions.showOptGroups && $(this).closest('li.optgroup') ) {
+                            $(this).closest('li.optgroup').show();
+
+                            if( $(this).closest('li.optgroup').find('li:visible').length ) {
+                                $(this).closest('li.optgroup').show();
+                            }
+                            else {
+                                $(this).closest('li.optgroup').hide();
+                            }
+                        }
+                    });
+                });
+            }
+
+            // add global select all options
+            if( options.selectAll ) {
+                optionsList.before('<a href="#" class="ms-selectall global">Select all</a>');
+
+                var globalSelectAll = optionsWrap.find('.ms-selectall.global');
+            }
+
+            // handle select all option
+            optionsWrap.on('click', '.ms-selectall', function( event ){
+                event.preventDefault();
+
+                if( $(this).hasClass('global') ) {
+                    // check if any selected if so then select them
+                    if( optionsList.find('li:not(.optgroup)').filter(':not(.selected)').length ) {
+                        optionsList.find('li:not(.optgroup)').filter(':not(.selected)').find('input[type="checkbox"]').trigger('click');
+                    }
+                    // deselect everything
+                    else {
+                        optionsList.find('li:not(.optgroup).selected input[type="checkbox"]').trigger('click');
+                    }
+                }
+                else if( $(this).closest('li').hasClass('optgroup') ) {
+                    var optgroup = $(this).closest('li.optgroup');
+
+                    // check if any selected if so then select them
+                    if( optgroup.find('li:not(.selected)').length ) {
+                        optgroup.find('li:not(.selected) input[type="checkbox"]').trigger('click');
+                    }
+                    // deselect everything
+                    else {
+                        optgroup.find('li.selected input[type="checkbox"]').trigger('click');
+                    }
+                }
+            });
+
             // hide native select list
             $(this).hide();
 
@@ -181,6 +253,11 @@
                     container.find('> .label').css({
                         clear: 'both'
                     });
+
+                    if( options.selectGroup ) {
+                        container.append('<a href="#" class="ms-selectall">Select all</a>');
+                    }
+
                     container.append('<ul></ul>');
 
                     $(this).children('option').each(function(){
