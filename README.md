@@ -28,6 +28,3 @@ $('select[multiple]').multiselect({
 | maxHeight    | number | null           | max height of option overlay   |
 | showCheckbox | bool   | true           | display the option checkbox    |
 | jqActualOpts | object | null           | options for jquery.actual      |
-
-### Todo
-* search/filtering of options
