@@ -27,4 +27,4 @@ $('select[multiple]').multiselect({
 | minHeight    | number | 200            | min height of option overlay   |
 | maxHeight    | number | null           | max height of option overlay   |
 | showCheckbox | bool   | true           | display the option checkbox    |
-| jqActualOpts | object | null           | options for jquery.actual      |
+| jqActualOpts | object | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
