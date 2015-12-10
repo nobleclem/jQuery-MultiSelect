@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 1.4
+ * @Version: 1.4.1
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -23,7 +23,7 @@
             search        : false,            // include option search box
             // search filter options
             searchOptions : {
-                default      : 'Search', // search input placeholder text
+                'default'    : 'Search', // search input placeholder text
                 showOptGroups: false     // show option group titles if no options remaining
             },
             selectAll     : false, // add select all option
@@ -51,10 +51,10 @@
                         .attr( 'id', 'ms-opt-'+ msCounter )
                 );
 
-                if( $(option).attr( 'selected' ) ) {
+                if( $(option).prop( 'selected' ) ) {
                     container.addClass('default');
                     container.addClass('selected');
-                    container.find( 'input[type="checkbox"]' ).attr( 'checked', 'checked' );
+                    container.find( 'input[type="checkbox"]' ).prop( 'checked', true );
                 }
 
                 var label = $('<label></label>').attr( 'for', 'ms-opt-'+ msCounter );
@@ -135,7 +135,7 @@
             });
 
             // hide options menus if click happens off of the list placeholder button
-            $(window).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
+            $(document).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
                     $('.ms-options-wrap > .ms-options:visible').hide();
                 }
@@ -175,7 +175,7 @@
 
             // add search box
             if( options.search ) {
-                optionsList.before('<div class="ms-search"><input type="text" value="" placeholder="'+ options.searchOptions.default +'" /></div>');
+                optionsList.before('<div class="ms-search"><input type="text" value="" placeholder="'+ options.searchOptions['default'] +'" /></div>');
 
                 var search = optionsWrap.find('.ms-search input');
                 search.on('keyup', function(){
@@ -333,7 +333,7 @@
                 var select = optionsWrap.parent().prev();
 
                 // toggle clicked option
-                select.find('option[value="'+ $(this).val() +'"]').attr(
+                select.find('option[value="'+ $(this).val() +'"]').prop(
                     'selected', $(this).is(':checked')
                 ).closest('select').trigger('change');
 
@@ -356,7 +356,7 @@
 
                 // get selected options
                 var selOpts = [];
-                select.find('option[selected="selected"]').each(function(){
+                select.find('option:selected').each(function(){
                     selOpts.push( $(this).text() );
                 });
 
