@@ -55,7 +55,7 @@ $('select[multiple]').multiselect( 'loadOption', [{
 
 Update options of select list. Default state will replace existing list with this one. *Set the second parameter to `false` to append to the list.*
 
-*This will **NOT** modify the original select list element.*
+*This will NOT modify the original select list element.*
 ```
 $('select[multiple]').multiselect( 'loadOption', [{
     name   : 'Option Name 1',
