@@ -36,6 +36,9 @@
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
         selectAll     : false, // add select all option
+        selectAllOptions: {
+            placeholder: 'Select all'            // select all placeholder text
+        },
         selectGroup   : false, // select entire optgroup
         minHeight     : 200,   // minimum height of option overlay
         maxHeight     : null,  // maximum height of option overlay
@@ -217,7 +220,7 @@
 
             // add global select all options
             if( instance.options.selectAll ) {
-                optionsList.before('<a href="#" class="ms-selectall global">Select all</a>');
+                optionsList.before('<a href="#" class="ms-selectall global">' + instance.options.selectAll.placeholder + '</a>');
             }
 
             // handle select all option
@@ -380,7 +383,8 @@
                     });
 
                     if( instance.options.selectGroup ) {
-                        container.append('<a href="#" class="ms-selectall">Select all</a>')
+                        container.append('<a href="#" class="ms-selectall">' + instance.options.selectAll.placeholder + '</a>')
+                        container.append('<a href="#" class="ms-selectall">' + instance.options.selectAll.placeholder + '</a>')
                     }
                     
                     container.append('<ul></ul>');
