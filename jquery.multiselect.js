@@ -368,6 +368,12 @@
             }
 
             for( var key in options ) {
+                // Prevent prototype methods injected into options from being
+                // iterated over.
+                if (!options.hasOwnProperty(key)) {
+                  continue;
+                }
+
                 var thisOption = options[ key ];
                 var container  = $('<li></li>');
 
@@ -382,7 +388,7 @@
                     if( instance.options.selectGroup ) {
                         container.append('<a href="#" class="ms-selectall">Select all</a>')
                     }
-                    
+
                     container.append('<ul></ul>');
 
                     for( var gKey in thisOption.options ) {
