@@ -392,6 +392,12 @@
                     container.append('<ul></ul>');
 
                     for( var gKey in thisOption.options ) {
+                        // Prevent prototype methods injected into options from
+                        // being iterated over.
+                        if (!thisOption.options.hasOwnProperty(gKey)) {
+                          continue;
+                        }
+
                         var thisGOption = thisOption.options[ gKey ];
                         var gContainer  = $('<li></li>').addClass('ms-reflow');
 
