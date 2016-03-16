@@ -341,7 +341,7 @@
                 ).closest('select').trigger('change');
 
                 if( typeof instance.options.onOptionClick == 'function' ) {
-                    instance.options.onOptionClick();
+                    instance.options.onOptionClick(instance.element, this);
                 }
 
                 instance._updatePlaceholderText();
