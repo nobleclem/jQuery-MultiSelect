@@ -27,6 +27,8 @@
 (function($){
     var defaults = {
         placeholder   : 'Select options', // text to use in dummy input
+        placeholderSelectedSuffix: 'selected', // text to use when text is longer than the field
+        placeholderSelectAll: 'Select all', // Text for Select All
         columns       : 1,                // how many columns should be use to show options
         search        : false,            // include option search box
         // search filter options
@@ -51,7 +53,7 @@
         // @NOTE: these are for future development
         maxWidth      : null,  // maximum width of option overlay (or selector)
         minSelect     : false, // minimum number of items that can be selected
-        maxSelect     : false, // maximum number of items that can be selected
+        maxSelect     : false // maximum number of items that can be selected
     };
 
     var msCounter = 1;
@@ -217,7 +219,7 @@
 
             // add global select all options
             if( instance.options.selectAll ) {
-                optionsList.before('<a href="#" class="ms-selectall global">Select all</a>');
+                optionsList.before('<a href="#" class="ms-selectall global">' + instance.options.placeholderSelectAll + '</a>');
             }
 
             // handle select all option
@@ -386,7 +388,7 @@
                     });
 
                     if( instance.options.selectGroup ) {
-                        container.append('<a href="#" class="ms-selectall">Select all</a>')
+                        container.append('<a href="#" class="ms-selectall">' + instance.options.placeholderSelectAll + '</a>')
                     }
 
                     container.append('<ul></ul>');
@@ -479,7 +481,7 @@
 
             // if copy is larger than button width use "# selected"
             if( copyWidth > placeWidth ) {
-                placeholder.text( selOpts.length +' selected' );
+                placeholder.text( selOpts.length + ' ' + instance.options.placeholderSelectedSuffix );
             }
             // if options selected then use those
             else if( selOpts.length ) {
