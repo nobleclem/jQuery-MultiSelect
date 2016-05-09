@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.0.2
+ * @Version: 2.1
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -11,7 +11,7 @@
  *
  * Usage:
  *     $('select[multiple]').multiselect();
- *     $('select[multiple]').multiselect({ placeholder: 'Select options' });
+ *     $('select[multiple]').multiselect({ texts: { placeholder: 'Select options' } });
  *     $('select[multiple]').multiselect('reload');
  *     $('select[multiple]').multiselect( 'loadOption', [{
  *         name   : 'Option Name 1',
@@ -64,7 +64,22 @@
     function MultiSelect( element, options )
     {
         this.element = element;
-        this.options = $.extend( {}, defaults, options );
+        this.options = $.extend( true, {}, defaults, options );
+
+
+        /** BACKWARDS COMPATIBILITY **/
+        if( this.options.placeholder ) {
+            this.options.texts.placeholder = this.options.placeholder;
+            delete this.options.placeholder;
+        }
+        if( this.options.searchOptions.default ) {
+            this.options.texts.search = this.options.searchOptions.default;
+            delete this.options.searchOptions.default;
+        }
+        /** END BACKWARDS COMPATIBILITY **/
+
+
+        // load this instance
         this.load();
     }
 
