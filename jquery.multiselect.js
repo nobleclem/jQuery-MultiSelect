@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.0.2
+ * @Version: 2.1
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -11,7 +11,7 @@
  *
  * Usage:
  *     $('select[multiple]').multiselect();
- *     $('select[multiple]').multiselect({ placeholder: 'Select options' });
+ *     $('select[multiple]').multiselect({ texts: { placeholder: 'Select options' } });
  *     $('select[multiple]').multiselect('reload');
  *     $('select[multiple]').multiselect( 'loadOption', [{
  *         name   : 'Option Name 1',
@@ -25,17 +25,22 @@
  *
  **/
 (function($){
-    var defaults = {
-        placeholder   : 'Select options', // text to use in dummy input
+    var defaults = {        
         columns       : 1,                // how many columns should be use to show options
         search        : false,            // include option search box
         // search filter options
-        searchOptions : {
-            'default'    : 'Search',             // search input placeholder text
+        searchOptions : {            
             showOptGroups: false,                // show option group titles if no options remaining
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
-        selectAll     : false, // add select all option
+        texts: {
+            placeholder:     'Select options', // text to use in dummy input
+            search:          'Search',         // search input placeholder text
+            selectedOptions: ' selected',      // selected suffix text
+            selectAll:       'Select all',     // select all text
+            noneSelected:    'None Selected'   // None selected text
+        },                
+        selectAll     : false, // add select all option        
         selectGroup   : false, // select entire optgroup
         minHeight     : 200,   // minimum height of option overlay
         maxHeight     : null,  // maximum height of option overlay
@@ -59,7 +64,22 @@
     function MultiSelect( element, options )
     {
         this.element = element;
-        this.options = $.extend( {}, defaults, options );
+        this.options = $.extend( true, {}, defaults, options );
+
+
+        /** BACKWARDS COMPATIBILITY **/
+        if( this.options.placeholder ) {
+            this.options.texts.placeholder = this.options.placeholder;
+            delete this.options.placeholder;
+        }
+        if( this.options.searchOptions.default ) {
+            this.options.texts.search = this.options.searchOptions.default;
+            delete this.options.searchOptions.default;
+        }
+        /** END BACKWARDS COMPATIBILITY **/
+
+
+        // load this instance
         this.load();
     }
 
@@ -165,13 +185,13 @@
             }).click(function( event ){ event.preventDefault(); });
 
             // add placeholder copy
-            if( instance.options.placeholder ) {
-                placeholder.text( instance.options.placeholder );
+            if( instance.options.texts.placeholder ) {
+                placeholder.text( instance.options.texts.placeholder );
             }
 
             // add search box
             if( instance.options.search ) {
-                optionsList.before('<div class="ms-search"><input type="text" value="" placeholder="'+ instance.options.searchOptions['default'] +'" /></div>');
+                optionsList.before('<div class="ms-search"><input type="text" value="" placeholder="'+ instance.options.texts.search +'" /></div>');
 
                 var search = optionsWrap.find('.ms-search input');
                 search.on('keyup', function(){
@@ -217,7 +237,7 @@
 
             // add global select all options
             if( instance.options.selectAll ) {
-                optionsList.before('<a href="#" class="ms-selectall global">Select all</a>');
+                optionsList.before('<a href="#" class="ms-selectall global">' + instance.options.texts.selectAll + '</a>');
             }
 
             // handle select all option
@@ -386,7 +406,7 @@
                     });
 
                     if( instance.options.selectGroup ) {
-                        container.append('<a href="#" class="ms-selectall">Select all</a>')
+                        container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')                        
                     }
 
                     container.append('<ul></ul>');
@@ -479,7 +499,7 @@
 
             // if copy is larger than button width use "# selected"
             if( copyWidth > placeWidth ) {
-                placeholder.text( selOpts.length +' selected' );
+                placeholder.text( selOpts.length + instance.options.texts.selectedOptions );
             }
             // if options selected then use those
             else if( selOpts.length ) {
@@ -487,7 +507,7 @@
             }
             // replace placeholder text
             else {
-                placeholder.text( instance.options.placeholder );
+                placeholder.text( instance.options.texts.placeholder );
             }
 
             // remove dummy element

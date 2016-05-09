@@ -12,7 +12,9 @@ $('select[multiple]').multiselect();
 
 $('select[multiple]').multiselect({
     columns: 4,
-    placeholder: 'Select options'
+    texts: {
+        placeholder: 'Select options'
+    }
 });
 
 $('select[multiple]').multiselect('reload');
@@ -31,23 +33,27 @@ $('select[multiple]').multiselect( 'loadOption', [{
 
 
 ### Options
-| Option          | Values   | Default        | Description                    |
-| --------------- | -------- | -------------- | ------------------------------ |
-| placeholder     | string   | Select options | default text for dropdown      |
-| columns         | int      | 1              | # of columns to show options   |
-| search          | bool     | false          | enable option search/filering  |
-| searchOptions   | object   |                |                                |
-| - default       | string   | Search         | search input placeholder text  |
-| - showOptGroups | bool     | false          | show option group titles if no options remaining |
-| - onSearch      | function |                | fires before search on options happens |
-| selectAll       | bool     | false          | add select all option          |
-| selectGroup     | bool     | false          | add select all optgroup option |
-| minHeight       | number   | 200            | min height of option overlay   |
-| maxHeight       | number   | null           | max height of option overlay   |
-| showCheckbox    | bool     | true           | display the option checkbox    |
-| onLoad          | function |                | fires at end of initial loading, hides native select list |
-| onOptionClick   | function |                | fires after on option is clicked and selected |
-| jqActualOpts    | object   | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
+| Option            | Values   | Default        | Description                    |
+| ----------------- | -------- | -------------- | ------------------------------ |
+| columns           | int      | 1              | # of columns to show options   |
+| search            | bool     | false          | enable option search/filering  |
+| searchOptions     | object   |                |                                |
+| - showOptGroups   | bool     | false          | show option group titles if no options remaining |
+| - onSearch        | function |                | fires before search on options happens |
+| texts             | object   |                |                                |
+| - placeholder     | string   | Select options | default text for dropdown      |
+| - default         | string   | Search         | search input placeholder text  |
+| - selectedOptions | string   |  selected      | selected suffix text           |
+| - selectAll       | string   | Select all     | select all text                |
+| - noneSelected    | string   | None Selected  | None selected text             |
+| selectAll         | bool     | false          | add select all option          |
+| selectGroup       | bool     | false          | add select all optgroup option |
+| minHeight         | number   | 200            | min height of option overlay   |
+| maxHeight         | number   | null           | max height of option overlay   |
+| showCheckbox      | bool     | true           | display the option checkbox    |
+| onLoad            | function |                | fires at end of initial loading, hides native select list |
+| onOptionClick     | function |                | fires after on option is clicked and selected |
+| jqActualOpts      | object   | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
 
 
 ### Methods
