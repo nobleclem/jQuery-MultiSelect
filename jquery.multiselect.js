@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.1.1
+ * @Version: 2.1.2
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -68,13 +68,13 @@
 
 
         /** BACKWARDS COMPATIBILITY **/
-        if( this.options.placeholder ) {
+        if( 'placeholder' in this.options ) {
             this.options.texts.placeholder = this.options.placeholder;
             delete this.options.placeholder;
         }
-        if( this.options.searchOptions.default ) {
-            this.options.texts.search = this.options.searchOptions.default;
-            delete this.options.searchOptions.default;
+        if( 'default' in this.options.searchOptions ) {
+            this.options.texts.search = this.options.searchOptions['default'];
+            delete this.options.searchOptions['default'];
         }
         /** END BACKWARDS COMPATIBILITY **/
 
