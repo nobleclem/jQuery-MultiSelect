@@ -119,7 +119,7 @@
             var maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
             if( instance.options.maxHeight ) {
                 maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
-                maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxheight;
+                maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
             }
 
             maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
