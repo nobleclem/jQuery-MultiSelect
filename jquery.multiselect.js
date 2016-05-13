@@ -52,7 +52,8 @@
             $(element).hide();
         },
         onOptionClick : function( element, option ){}, // fires when an option is clicked
-
+        onControlClose: function (element, option) { }, // fires when the control is closed
+        
         // @NOTE: these are for future development
         maxWidth      : null,  // maximum width of option overlay (or selector)
         minSelect     : false, // minimum number of items that can be selected
@@ -149,6 +150,9 @@
             $(document).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
                     $('.ms-options-wrap > .ms-options:visible').hide();
+                    if (typeof instance.options.onControlClose == 'function') {
+                        instance.options.onControlClose(instance.element, this);
+                    }
                 }
             });
 
