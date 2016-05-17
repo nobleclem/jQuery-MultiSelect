@@ -19,7 +19,7 @@ $('select[multiple]').multiselect({
 
 $('select[multiple]').multiselect('reload');
 
-$('select[multiple]').multiselect( 'loadOption', [{
+$('select[multiple]').multiselect( 'loadOptions', [{
     name   : 'Option Name 1',
     value  : 'option-value-1',
     checked: false
@@ -63,7 +63,7 @@ Update options of select list. Default state will replace existing list with thi
 
 *This will NOT modify the original select list element.*
 ```
-$('select[multiple]').multiselect( 'loadOption', [{
+$('select[multiple]').multiselect( 'loadOptions', [{
     name   : 'Option Name 1',
     value  : 'option-value-1',
     checked: false
