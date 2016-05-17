@@ -13,7 +13,7 @@
  *     $('select[multiple]').multiselect();
  *     $('select[multiple]').multiselect({ texts: { placeholder: 'Select options' } });
  *     $('select[multiple]').multiselect('reload');
- *     $('select[multiple]').multiselect( 'loadOption', [{
+ *     $('select[multiple]').multiselect( 'loadOptions', [{
  *         name   : 'Option Name 1',
  *         value  : 'option-value-1',
  *         checked: false
