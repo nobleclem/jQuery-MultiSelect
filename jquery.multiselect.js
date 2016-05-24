@@ -275,11 +275,11 @@
                     var groupOptions = [];
 
                     $(this).children('option').each(function(){
-                        groupOptions[ $(this).val() ] = {
+                        groupOptions.push({
                             name   : $(this).text(),
                             value  : $(this).val(),
                             checked: $(this).prop( 'selected' )
-                        };
+                        });
                     });
 
                     options.push({
