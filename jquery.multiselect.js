@@ -503,7 +503,12 @@
             }
             // if options selected then use those
             else if( selOpts.length ) {
-                placeholder.text( selOpts.join( ', ' ) );
+                // trim each element in case of extra spaces
+                placeholder.text(
+                    selOpts.map(function( element ){
+                        return element.trim();
+                    }).join(', ')
+                );
             }
             // replace placeholder text
             else {
