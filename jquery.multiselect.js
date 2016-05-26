@@ -176,11 +176,23 @@
                     var maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
                     if( instance.options.maxHeight ) {
                         maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
-                        maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxheight;
+                        maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
                     }
                     maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
                     optionsWrap.css( 'maxHeight', maxHeight );
+                }
+                
+                // make options placed upon button if partially outside of the bottom screen
+                var viewBottom = ($(window).scrollTop() + $(window).height());
+                var optionsWrapBottom = (optionsWrap.offset().top + optionsWrap.height());
+                if (optionsWrapBottom < viewBottom) {
+                	optionsWrap.css('position','absolute');
+                	optionsWrap.css('top', '');
+                }
+                else {
+                	optionsWrap.css('position','absolute');
+                	optionsWrap.css('top', '-' + maxHeight + 'px');
                 }
             }).click(function( event ){ event.preventDefault(); });
 
