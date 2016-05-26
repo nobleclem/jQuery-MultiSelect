@@ -186,14 +186,7 @@
                 // make options placed upon button if partially outside of the bottom screen
                 var viewBottom = ($(window).scrollTop() + $(window).height());
                 var optionsWrapBottom = (optionsWrap.offset().top + optionsWrap.height());
-                if (optionsWrapBottom < viewBottom) {
-                	optionsWrap.css('position','absolute');
-                	optionsWrap.css('top', '');
-                }
-                else {
-                	optionsWrap.css('position','absolute');
-                	optionsWrap.css('top', '-' + maxHeight + 'px');
-                }
+               	optionsWrap.css('top', (optionsWrapBottom < viewBottom ? '' : '-' + maxHeight + 'px'));
             }).click(function( event ){ event.preventDefault(); });
 
             // add placeholder copy
