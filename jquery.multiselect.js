@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.1.2
+ * @Version: 2.1.3
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -116,9 +116,9 @@
                 optionsWrap.parent().css( 'position', 'relative' );
             }
 
-            var maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+            var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
             if( instance.options.maxHeight ) {
-                maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+                maxHeight = maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                 maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
             }
 
@@ -173,9 +173,9 @@
                 if( optionsWrap.is(':visible') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
-                    var maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+                    var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                     if( instance.options.maxHeight ) {
-                        maxHeight = ($(window).height() - optionsWrap.offset().top - 20);
+                        maxHeight = maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                         maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxheight;
                     }
                     maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
