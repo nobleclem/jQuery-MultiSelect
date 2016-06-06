@@ -52,7 +52,7 @@
             $(element).hide();
         },
         onOptionClick : function( element, option ){}, // fires when an option is clicked
-        onControlClose: function (element, option) { }, // fires when the control is closed
+        onControlClose: function( element ){}, // fires when the options list is closed
         
         // @NOTE: these are for future development
         maxWidth      : null,  // maximum width of option overlay (or selector)
@@ -95,7 +95,7 @@
             }
 
             // sanity check so we don't double load on a select element
-            $(instance.element).addClass('jqmsLoaded');
+            $(instance.element).addClass('jqmsLoaded').data( 'plugin_multiselect-instance', instance );
 
             // add option container
             $(instance.element).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div></div>');
@@ -149,11 +149,15 @@
             // hide options menus if click happens off of the list placeholder button
             $(document).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
-                    if ($('.ms-options-wrap > .ms-options').is(":visible")) {
-                        $('.ms-options-wrap > .ms-options:visible').hide();
-                        if (typeof instance.options.onControlClose == 'function') {
-                            instance.options.onControlClose(instance.element, this);
-                        }
+                    if( $('.ms-options-wrap > .ms-options:visible').length ) {
+                        $('.ms-options-wrap > .ms-options:visible').each(function(){
+                            $(this).hide();
+
+                            var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
+                            if( typeof thisInst.options.onControlClose == 'function' ) {
+                                thisInst.options.onControlClose( thisInst.element );
+                            }
+                        });
                     }
                 }
             });
