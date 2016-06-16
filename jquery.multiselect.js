@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.1.3
+ * @Version: 2.1.4
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -25,11 +25,11 @@
  *
  **/
 (function($){
-    var defaults = {        
+    var defaults = {
         columns       : 1,                // how many columns should be use to show options
         search        : false,            // include option search box
         // search filter options
-        searchOptions : {            
+        searchOptions : {
             showOptGroups: false,                // show option group titles if no options remaining
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
@@ -39,8 +39,8 @@
             selectedOptions: ' selected',      // selected suffix text
             selectAll:       'Select all',     // select all text
             noneSelected:    'None Selected'   // None selected text
-        },                
-        selectAll     : false, // add select all option        
+        },
+        selectAll     : false, // add select all option
         selectGroup   : false, // select entire optgroup
         minHeight     : 200,   // minimum height of option overlay
         maxHeight     : null,  // maximum height of option overlay
@@ -53,7 +53,7 @@
         },
         onOptionClick : function( element, option ){}, // fires when an option is clicked
         onControlClose: function( element ){}, // fires when the options list is closed
-        
+
         // @NOTE: these are for future development
         maxWidth      : null,  // maximum width of option overlay (or selector)
         minSelect     : false, // minimum number of items that can be selected
@@ -416,7 +416,7 @@
                     });
 
                     if( instance.options.selectGroup ) {
-                        container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')                        
+                        container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')
                     }
 
                     container.append('<ul></ul>');
