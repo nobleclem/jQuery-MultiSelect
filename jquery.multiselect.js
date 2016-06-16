@@ -315,7 +315,7 @@
             if( hasOptGroup ) {
                 // float non grouped options
                 optionsList.find('> li:not(.optgroup)').css({
-                    float: 'left',
+                    'float': 'left',
                     width: (100 / instance.options.columns) +'%'
                 });
 
@@ -334,7 +334,7 @@
                 // for crappy IE versions float grouped options
                 if( this._ieVersion() && (this._ieVersion() < 10) ) {
                     optionsList.find('li.optgroup > ul > li').css({
-                        float: 'left',
+                        'float': 'left',
                         width: (100 / instance.options.columns) +'%'
                     });
                 }
@@ -353,7 +353,7 @@
                 // for crappy IE versions float grouped options
                 if( this._ieVersion() && (this._ieVersion() < 10) ) {
                     optionsList.find('> li').css({
-                        float: 'left',
+                        'float': 'left',
                         width: (100 / instance.options.columns) +'%'
                     });
                 }
