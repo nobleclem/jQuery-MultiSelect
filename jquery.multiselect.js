@@ -119,7 +119,7 @@
 
             var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
             if( instance.options.maxHeight ) {
-                maxHeight = maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
+                maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                 maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
             }
 
@@ -183,9 +183,9 @@
                 if( optionsWrap.is(':visible') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
-                    var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
+                    maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                     if( instance.options.maxHeight ) {
-                        maxHeight = maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
+                        maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                         maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxheight;
                     }
                     maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
