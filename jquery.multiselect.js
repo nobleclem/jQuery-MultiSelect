@@ -360,6 +360,12 @@
             }
 
             // BIND SELECT ACTION
+            // for crappy IE label doesn't handle click event => add click event to li
+            if( this._ieVersion() && (this._ieVersion() <= 8) ) {
+            	optionsWrap.on( 'click', 'li.ms-reflow', function(){
+            		$(this).find('input[type="checkbox"]').click();
+            	});
+            }
             optionsWrap.on( 'click', 'input[type="checkbox"]', function(){
                 $(this).closest( 'li' ).toggleClass( 'selected' );
 
