@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.1.4
+ * @Version: 2.1.5
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -61,6 +61,22 @@
     };
 
     var msCounter = 1;
+
+    // FOR LEGACY BROWSERS (talking to you IE8)
+    if( typeof Array.prototype.map !== 'function' ) {
+        Array.prototype.map = function( callback, thisArg ) {
+            if( typeof thisArg === 'undefined' ) {
+                thisArg = this;
+            }
+
+            return $.isArray( thisArg ) ? $.map( thisArg, callback ) : [];
+        };
+    }
+    if( typeof String.prototype.trim !== 'function' ) {
+        String.prototype.trim = function() {
+            return this.replace(/^\s+|\s+$/g, '');
+        }
+    }
 
     function MultiSelect( element, options )
     {
