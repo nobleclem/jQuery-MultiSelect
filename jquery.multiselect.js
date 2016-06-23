@@ -104,6 +104,11 @@
             var optionsList = optionsWrap.find('> ul');
             var hasOptGroup = $(instance.element).find('optgroup').length ? true : false;
 
+            // don't show checkbox (add class for css to hide checkboxes)
+            if( !instance.options.showCheckbox ) {
+                optionsWrap.addClass('hide-checkbox');
+            }
+
             var maxWidth = null;
             if( typeof instance.options.width == 'number' ) {
                 optionsWrap.parent().css( 'position', 'relative' );
@@ -377,6 +382,13 @@
                 instance._updatePlaceholderText();
             });
 
+            // BIND FOCUS EVENT
+            optionsWrap.on('focusin', 'input[type="checkbox"]', function(){
+                $(this).closest('label').addClass('focused');
+            }).on('focusout', 'input[type="checkbox"]', function(){
+                $(this).closest('label').removeClass('focused');
+            });
+
             // hide native select list
             if( typeof instance.options.onLoad === 'function' ) {
                 instance.options.onLoad( instance.element );
@@ -547,11 +559,6 @@
 
             var label = $('<label></label>').attr( 'for', 'ms-opt-'+ msCounter );
             container.wrapInner( label );
-
-
-            if( !this.options.showCheckbox ) {
-                container.find('input[id="ms-opt-'+ msCounter +'"]').hide();
-            }
 
             msCounter = msCounter + 1;
         },
