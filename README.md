@@ -57,9 +57,11 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 
 
 ### Methods
-**loadOptions( options, overwrite )**
+**loadOptions( options, overwrite, updateSelect )**
 
-Update options of select list. Default state will replace existing list with this one. *Set the second parameter to `false` to append to the list.*
+Update options of select list. Default state will replace existing list with this one.
+- *Set the second parameter to `false` to append to the list. (default = true)*
+- *Set the third parameter to `false` to leave the native select list as is. (default = true)*
 
 *This will NOT modify the original select list element.*
 ```
