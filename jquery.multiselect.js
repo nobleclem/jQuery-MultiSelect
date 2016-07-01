@@ -277,24 +277,24 @@
 
                 if( $(this).hasClass('global') ) {
                     // check if any selected if so then select them
-                    if( optionsList.find('li:not(.optgroup)').filter(':not(.selected)').length ) {
-                        optionsList.find('li:not(.optgroup)').filter(':not(.selected)').find('input[type="checkbox"]').trigger('click');
+                    if( optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').length ) {
+                        optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').find('input[type="checkbox"]').trigger('click');
                     }
                     // deselect everything
                     else {
-                        optionsList.find('li:not(.optgroup).selected input[type="checkbox"]').trigger('click');
+                        optionsList.find('li:not(.optgroup).selected:visible input[type="checkbox"]').trigger('click');
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
                     var optgroup = $(this).closest('li.optgroup');
 
                     // check if any selected if so then select them
-                    if( optgroup.find('li:not(.selected)').length ) {
-                        optgroup.find('li:not(.selected) input[type="checkbox"]').trigger('click');
+                    if( optgroup.find('li:not(.selected)').filter(':visible').length ) {
+                        optgroup.find('li:not(.selected):visible input[type="checkbox"]').trigger('click');
                     }
                     // deselect everything
                     else {
-                        optgroup.find('li.selected input[type="checkbox"]').trigger('click');
+                        optgroup.find('li.selected:visible input[type="checkbox"]').trigger('click');
                     }
                 }
             });
