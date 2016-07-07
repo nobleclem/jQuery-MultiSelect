@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.2.2
+ * @Version: 2.2.3
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -48,9 +48,7 @@
         jqActualOpts  : {},    // options for jquery.actual
 
         // Callbacks
-        onLoad        : function( element ) {  // fires at end of list initialization
-            $(element).hide();
-        },
+        onLoad        : function( element ) {},  // fires at end of list initialization
         onOptionClick : function( element, option ){}, // fires when an option is clicked
         onControlClose: function( element ){}, // fires when the options list is closed
 
@@ -83,7 +81,6 @@
         this.element = element;
         this.options = $.extend( true, {}, defaults, options );
 
-
         /** BACKWARDS COMPATIBILITY **/
         if( 'placeholder' in this.options ) {
             this.options.texts.placeholder = this.options.placeholder;
@@ -94,7 +91,6 @@
             delete this.options.searchOptions['default'];
         }
         /** END BACKWARDS COMPATIBILITY **/
-
 
         // load this instance
         this.load();
@@ -115,6 +111,7 @@
 
             // add option container
             $(instance.element).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div></div>');
+
             var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
             var optionsList = optionsWrap.find('> ul');
@@ -125,6 +122,7 @@
                 optionsWrap.addClass('hide-checkbox');
             }
 
+            // determine maxWidth
             var maxWidth = null;
             if( typeof instance.options.width == 'number' ) {
                 optionsWrap.parent().css( 'position', 'relative' );
@@ -138,12 +136,15 @@
                 optionsWrap.parent().css( 'position', 'relative' );
             }
 
+            // cacl default maxHeight
             var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
+
+            // override with user defined maxHeight
             if( instance.options.maxHeight ) {
                 maxHeight = instance.options.maxHeight;
-                maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
             }
 
+            // maxHeight cannot be less than options.minHeight
             maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
             optionsWrap.css({
@@ -175,6 +176,8 @@
                             $(this).hide();
 
                             var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
+
+                            // USER CALLBACK
                             if( typeof thisInst.options.onControlClose == 'function' ) {
                                 thisInst.options.onControlClose( thisInst.element );
                             }
@@ -204,11 +207,15 @@
                 if( optionsWrap.is(':visible') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
-                    maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
+                    // cacl default maxHeight
+                    var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
+
+                    // override with user defined maxHeight
                     if( instance.options.maxHeight ) {
                         maxHeight = instance.options.maxHeight;
-                        maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
                     }
+
+                    // maxHeight cannot be less than options.minHeight
                     maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
                     optionsWrap.css( 'maxHeight', maxHeight );
@@ -343,6 +350,7 @@
                     'selected', $(this).is(':checked')
                 ).closest('select').trigger('change');
 
+                // USER CALLBACK
                 if( typeof instance.options.onOptionClick == 'function' ) {
                     instance.options.onOptionClick(instance.element, this);
                 }
@@ -357,13 +365,13 @@
                 $(this).closest('label').removeClass('focused');
             });
 
-            // hide native select list
+            // USER CALLBACK
             if( typeof instance.options.onLoad === 'function' ) {
                 instance.options.onLoad( instance.element );
             }
-            else {
-                $(instance.element).hide();
-            }
+
+            // hide native select list
+            $(instance.element).hide();
         },
 
         /* LOAD SELECT OPTIONS */
@@ -412,6 +420,7 @@
                         clear: 'both'
                     });
 
+                    // add select all link
                     if( instance.options.selectGroup ) {
                         container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')
                     }
@@ -478,6 +487,7 @@
                 }
             });
 
+            // update placeholder text
             instance._updatePlaceholderText();
 
             // RESET COLUMN STYLES
