@@ -52,7 +52,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | maxHeight         | number   | null           | max height of option overlay   |
 | showCheckbox      | bool     | true           | display the option checkbox    |
 | onLoad            | function |                | fires at end of initial loading, hides native select list |
-| onOptionClick     | function |                | fires after on option is clicked and selected |
+| onOptionClick     | function |                | fires after on option is clicked |
 | jqActualOpts      | object   | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
 
 
@@ -105,7 +105,7 @@ element: select list element object
 
 **onOptionClick**
 
-*Fires after an option is clicked and selected*
+*Fires after an option is clicked*
 
 `onOptionClick( element, option )`
 
