@@ -42,7 +42,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | - onSearch        | function |                | fires before search on options happens |
 | texts             | object   |                |                                |
 | - placeholder     | string   | Select options | default text for dropdown      |
-| - default         | string   | Search         | search input placeholder text  |
+| - search          | string   | Search         | search input placeholder text  |
 | - selectedOptions | string   |  selected      | selected suffix text           |
 | - selectAll       | string   | Select all     | select all text                |
 | - noneSelected    | string   | None Selected  | None selected text             |
