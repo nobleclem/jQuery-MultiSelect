@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.2.3
+ * @Version: 2.3.0
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -46,6 +46,7 @@
         maxHeight     : null,  // maximum height of option overlay
         showCheckbox  : true,  // display the checkbox to the user
         jqActualOpts  : {},    // options for jquery.actual
+        optionAttributes: [],  // attributes to copy to the checkbox from the option element
 
         // Callbacks
         onLoad        : function( element ) {},  // fires at end of list initialization
@@ -313,10 +314,20 @@
                     var groupOptions = [];
 
                     $(this).children('option').each(function(){
+                        var thisOptionAtts = {};
+                        for( var i = 0; i < instance.options.optionAttributes.length; i++ ) {
+                            var thisOptAttr = instance.options.optionAttributes[ i ];
+
+                            if( $(this).attr( thisOptAttr ) !== undefined ) {
+                                thisOptionAtts[ thisOptAttr ] = $(this).attr( thisOptAttr );
+                            }
+                        }
+
                         groupOptions.push({
                             name   : $(this).text(),
                             value  : $(this).val(),
-                            checked: $(this).prop( 'selected' )
+                            checked: $(this).prop( 'selected' ),
+                            attributes: thisOptionAtts
                         });
                     });
 
@@ -326,10 +337,20 @@
                     });
                 }
                 else if( this.nodeName == 'OPTION' ) {
+                    var thisOptionAtts = {};
+                    for( var i = 0; i < instance.options.optionAttributes.length; i++ ) {
+                        var thisOptAttr = instance.options.optionAttributes[ i ];
+
+                        if( $(this).attr( thisOptAttr ) !== undefined ) {
+                            thisOptionAtts[ thisOptAttr ] = $(this).attr( thisOptAttr );
+                        }
+                    }
+
                     options.push({
-                        name   : $(this).text(),
-                        value  : $(this).val(),
-                        checked: $(this).prop( 'selected' )
+                        name      : $(this).text(),
+                        value     : $(this).val(),
+                        checked   : $(this).prop( 'selected' ),
+                        attributes: thisOptionAtts
                     });
                 }
                 else {
@@ -398,11 +419,19 @@
                     continue;
                 }
 
-                var thisOption = options[ key ];
-                var container  = $('<li></li>');
+                var thisOption      = options[ key ];
+                var container       = $('<li></li>');
+                var appendContainer = true;
 
                 // OPTGROUP
                 if( thisOption.hasOwnProperty('options') ) {
+                    optionsList.find('> li.optgroup > span.label').each(function(){
+                        if( $(this).text() == thisOption.label ) {
+                            container       = $(this).closest('.optgroup');
+                            appendContainer = false;
+                        }
+                    });
+
                     // prepare to append optgroup to select element
                     if( updateSelect ) {
                         if( select.find('optgroup[label="'+ thisOption.label +'"]').length ) {
@@ -414,18 +443,21 @@
                         }
                     }
 
-                    container.addClass('optgroup');
-                    container.append('<span class="label">'+ thisOption.label +'</span>');
-                    container.find('> .label').css({
-                        clear: 'both'
-                    });
+                    // setup container
+                    if( appendContainer ) {
+                        container.addClass('optgroup');
+                        container.append('<span class="label">'+ thisOption.label +'</span>');
+                        container.find('> .label').css({
+                            clear: 'both'
+                        });
 
-                    // add select all link
-                    if( instance.options.selectGroup ) {
-                        container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')
+                        // add select all link
+                        if( instance.options.selectGroup ) {
+                            container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')
+                        }
+
+                        container.append('<ul></ul>');
                     }
-
-                    container.append('<ul></ul>');
 
                     for( var gKey in thisOption.options ) {
                         // Prevent prototype methods injected into options from
@@ -445,6 +477,12 @@
                         if( updateSelect ) {
                             var selOption = $('<option value="'+ thisGOption.value +'">'+ thisGOption.name +'</option>');
 
+                            // add custom user attributes
+                            if( thisGOption.hasOwnProperty('attributes') && Object.keys( thisGOption.attributes ).length ) {
+                                //selOption.attr( thisGOption.attributes );
+                            }
+
+                            // mark option as selected
                             if( thisGOption.checked ) {
                                 selOption.prop( 'selected', true );
                             }
@@ -457,11 +495,18 @@
                 else if( thisOption.hasOwnProperty('value') ) {
                     container.addClass('ms-reflow')
 
+                    // add option to ms dropdown
                     instance._addOption( container, thisOption );
 
                     if( updateSelect ) {
                         var selOption = $('<option value="'+ thisOption.value +'">'+ thisOption.name +'</option>');
 
+                        // add custom user attributes
+                        if( thisOption.hasOwnProperty('attributes') && Object.keys( thisOption.attributes ).length ) {
+                            selOption.attr( thisOption.attributes );
+                        }
+
+                        // mark option as selected
                         if( thisOption.checked ) {
                             selOption.prop( 'selected', true );
                         }
@@ -470,7 +515,9 @@
                     }
                 }
 
-                optionsList.append( container );
+                if( appendContainer ) {
+                    optionsList.append( container );
+                }
             }
 
             optionsList.find('.ms-reflow input[type="checkbox"]').each(function( idx ){
@@ -618,12 +665,18 @@
         // Add option to the custom dom list
         _addOption: function( container, option ) {
             container.text( option.name );
-            container.prepend(
-                $('<input type="checkbox" value="" title="" />')
-                    .val( option.value )
-                    .attr( 'title', option.name )
-                    .attr( 'id', 'ms-opt-'+ msCounter )
-            );
+
+            var thisCheckbox = $('<input type="checkbox" value="" title="" />')
+                .val( option.value )
+                .attr( 'title', option.name )
+                .attr( 'id', 'ms-opt-'+ msCounter );
+
+            // add user defined attributes
+            if( option.hasOwnProperty('attributes') && Object.keys( option.attributes ).length ) {
+                thisCheckbox.attr( option.attributes );
+            }
+
+            container.prepend( thisCheckbox );
 
             if( option.checked ) {
                 container.addClass('default');

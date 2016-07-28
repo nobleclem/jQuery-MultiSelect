@@ -22,11 +22,19 @@ $('select[multiple]').multiselect('reload');
 $('select[multiple]').multiselect( 'loadOptions', [{
     name   : 'Option Name 1',
     value  : 'option-value-1',
-    checked: false
+    checked: false,
+    attributes : {
+        custom1: 'value1',
+        custom2: 'value2'
+    }
 },{
     name   : 'Option Name 2',
     value  : 'option-value-2',
-    checked: false
+    checked: false,
+    attributes : {
+        custom1: 'value1',
+        custom2: 'value2'
+    }
 }]);
 ```
 *If your list is not visible on page load, add the [jquery.actual](https://github.com/dreamerslab/jquery.actual) plugin to your project.  This will allow proper width calculations to happen.*
@@ -54,6 +62,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | onLoad            | function |                | fires at end of initial loading, hides native select list |
 | onOptionClick     | function |                | fires after on option is clicked |
 | jqActualOpts      | object   | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
+| optionAttributes  | array    |                | array of attribute keys to copy to the checkbox input |
 
 
 ### Methods
