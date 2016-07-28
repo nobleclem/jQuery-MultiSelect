@@ -16,11 +16,19 @@
  *     $('select[multiple]').multiselect( 'loadOptions', [{
  *         name   : 'Option Name 1',
  *         value  : 'option-value-1',
- *         checked: false
+ *         checked: false,
+ *         attributes : {
+ *             custom1: 'value1',
+ *             custom2: 'value2'
+ *         }
  *     },{
  *         name   : 'Option Name 2',
  *         value  : 'option-value-2',
- *         checked: false
+ *         checked: false,
+ *         attributes : {
+ *             custom1: 'value1',
+ *             custom2: 'value2'
+ *         }
  *     }]);
  *
  **/
