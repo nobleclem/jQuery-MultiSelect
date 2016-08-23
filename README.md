@@ -19,14 +19,22 @@ $('select[multiple]').multiselect({
 
 $('select[multiple]').multiselect('reload');
 
-$('select[multiple]').multiselect( 'loadOption', [{
+$('select[multiple]').multiselect( 'loadOptions', [{
     name   : 'Option Name 1',
     value  : 'option-value-1',
-    checked: false
+    checked: false,
+    attributes : {
+        custom1: 'value1',
+        custom2: 'value2'
+    }
 },{
     name   : 'Option Name 2',
     value  : 'option-value-2',
-    checked: false
+    checked: false,
+    attributes : {
+        custom1: 'value1',
+        custom2: 'value2'
+    }
 }]);
 ```
 *If your list is not visible on page load, add the [jquery.actual](https://github.com/dreamerslab/jquery.actual) plugin to your project.  This will allow proper width calculations to happen.*
@@ -42,7 +50,7 @@ $('select[multiple]').multiselect( 'loadOption', [{
 | - onSearch        | function |                | fires before search on options happens |
 | texts             | object   |                |                                |
 | - placeholder     | string   | Select options | default text for dropdown      |
-| - default         | string   | Search         | search input placeholder text  |
+| - search          | string   | Search         | search input placeholder text  |
 | - selectedOptions | string   |  selected      | selected suffix text           |
 | - selectAll       | string   | Select all     | select all text                |
 | - noneSelected    | string   | None Selected  | None selected text             |
@@ -52,18 +60,21 @@ $('select[multiple]').multiselect( 'loadOption', [{
 | maxHeight         | number   | null           | max height of option overlay   |
 | showCheckbox      | bool     | true           | display the option checkbox    |
 | onLoad            | function |                | fires at end of initial loading, hides native select list |
-| onOptionClick     | function |                | fires after on option is clicked and selected |
+| onOptionClick     | function |                | fires after on option is clicked |
 | jqActualOpts      | object   | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
+| optionAttributes  | array    |                | array of attribute keys to copy to the checkbox input |
 
 
 ### Methods
-**loadOptions( options, overwrite )**
+**loadOptions( options, overwrite, updateSelect )**
 
-Update options of select list. Default state will replace existing list with this one. *Set the second parameter to `false` to append to the list.*
+Update options of select list. Default state will replace existing list with this one.
+- *Set the second parameter to `false` to append to the list. (default = true)*
+- *Set the third parameter to `false` to leave the native select list as is. (default = true)*
 
 *This will NOT modify the original select list element.*
 ```
-$('select[multiple]').multiselect( 'loadOption', [{
+$('select[multiple]').multiselect( 'loadOptions', [{
     name   : 'Option Name 1',
     value  : 'option-value-1',
     checked: false
@@ -103,7 +114,7 @@ element: select list element object
 
 **onOptionClick**
 
-*Fires after an option is clicked and selected*
+*Fires after an option is clicked*
 
 `onOptionClick( element, option )`
 

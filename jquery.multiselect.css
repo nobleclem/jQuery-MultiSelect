@@ -89,11 +89,18 @@
     width: 100%;
     padding: 4px;
     margin: 1px 0;
+    border: 1px dotted transparent;
 }
 
-.ms-options-wrap > .ms-options > ul li.selected label,
+.ms-options-wrap > .ms-options > ul label.focused,
 .ms-options-wrap > .ms-options > ul label:hover {
     background-color: #efefef;
+    border-color: #999;
+}
+
+.ms-options-wrap > .ms-options > ul li.selected label {
+    background-color: #efefef;
+    border-color: transparent;
 }
 
 .ms-options-wrap > .ms-options > ul input[type="checkbox"] {
@@ -101,4 +108,13 @@
     position: absolute;
     left: 4px;
     top: 7px;
+}
+
+.ms-options-wrap > .ms-options.hide-checkbox > ul input[type="checkbox"] {
+    position: absolute !important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px);
+    clip: rect(1px, 1px, 1px, 1px);
 }
