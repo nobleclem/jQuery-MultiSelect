@@ -50,6 +50,7 @@
         },
         selectAll     : false, // add select all option
         selectGroup   : false, // select entire optgroup
+        maxSelectable : false,     // maximum number of selectable items, false to disable
         minHeight     : 200,   // minimum height of option overlay
         maxHeight     : null,  // maximum height of option overlay
         showCheckbox  : true,  // display the checkbox to the user
@@ -109,6 +110,7 @@
         /* LOAD CUSTOM MULTISELECT DOM/ACTIONS */
         load: function() {
             var instance = this;
+            var selectedCount = 0;
 
             // make sure this is a select list and not loaded
             if( (instance.element.nodeName != 'SELECT') || $(instance.element).hasClass('jqmsLoaded') ) {
@@ -129,6 +131,10 @@
             // don't show checkbox (add class for css to hide checkboxes)
             if( !instance.options.showCheckbox ) {
                 optionsWrap.addClass('hide-checkbox');
+            }
+
+            if (instance.options.maxSelectable !== false) {
+                $(instance.element).next('.ms-options-wrap').addClass('ms-has-maxselectable');
             }
 
             // determine maxWidth
@@ -183,6 +189,7 @@
                     if( $('.ms-options-wrap > .ms-options:visible').length ) {
                         $('.ms-options-wrap > .ms-options:visible').each(function(){
                             $(this).hide();
+                            $(this).parent().removeClass('ms-options-open');
 
                             var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
@@ -206,6 +213,7 @@
                 $('.ms-options-wrap > .ms-options:visible').each(function(){
                     if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
                         $(this).hide();
+                        $(this).parent().removeClass('ms-options-open');
                     }
                 });
 
@@ -215,6 +223,7 @@
                 // recalculate height
                 if( optionsWrap.is(':visible') ) {
                     optionsWrap.css( 'maxHeight', '' );
+                    optionsWrap.parent().addClass('ms-options-open');
 
                     // cacl default maxHeight
                     var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
@@ -228,6 +237,8 @@
                     maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
                     optionsWrap.css( 'maxHeight', maxHeight );
+                } else {
+                    optionsWrap.parent().removeClass('ms-options-open');
                 }
             }).click(function( event ){ event.preventDefault(); });
 
@@ -368,9 +379,33 @@
             });
             instance.loadOptions( options, true, false );
 
+            optionsWrap.on( 'change', 'input[type="checkbox"]', function(ev) {
+                if (this.checked) {
+                    selectedCount++;
+                } else {
+                    selectedCount--;
+                }
+
+                if (instance.options.maxSelectable !== false) {
+                    if (selectedCount >= instance.options.maxSelectable) {
+                        optionsWrap.addClass('ms-max-selected');
+                    } else {
+                        optionsWrap.removeClass('ms-max-selected');
+                    }
+                }
+            });
+
             // BIND SELECT ACTION
-            optionsWrap.on( 'click', 'input[type="checkbox"]', function(){
-                $(this).closest( 'li' ).toggleClass( 'selected' );
+            optionsWrap.on( 'click', 'input[type="checkbox"]', function(ev){
+                var $listItem = $(this).closest('li');
+
+                // if option is not selected and the max has been reached, do nothing
+                if (instance.options.maxSelectable !== false && selectedCount >= instance.options.maxSelectable && this.checked !== false) {
+                    ev.preventDefault();
+                    return false;
+                }
+
+                $listItem.toggleClass('selected');
 
                 var select = optionsWrap.parent().prev();
 
@@ -398,6 +433,9 @@
             if( typeof instance.options.onLoad === 'function' ) {
                 instance.options.onLoad( instance.element );
             }
+
+            // count the number of selected options by default
+            selectedCount = optionsWrap.find('.selected').length;
 
             // hide native select list
             $(instance.element).hide();
