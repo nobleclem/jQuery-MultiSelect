@@ -61,6 +61,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | showCheckbox      | bool     | true           | display the option checkbox    |
 | onLoad            | function |                | fires at end of initial loading, hides native select list |
 | onOptionClick     | function |                | fires after on option is clicked |
+| onControlClose    | function |                | fires when the options list is closed |
 | jqActualOpts      | object   | null           | options for [jquery.actual](https://github.com/dreamerslab/jquery.actual)      |
 | optionAttributes  | array    |                | array of attribute keys to copy to the checkbox input |
 
@@ -121,6 +122,15 @@ element: select list element object
 element: select list element object
 
 option:  option element object
+
+
+**onControlClose**
+
+Fires when the options list is closed
+
+`onControlClose( element )`
+
+element: select list element object
 
 
 **onSearch**
