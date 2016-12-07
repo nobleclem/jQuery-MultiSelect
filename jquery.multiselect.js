@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.0
+ * @Version: 2.3.1
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -89,6 +89,7 @@
     {
         this.element = element;
         this.options = $.extend( true, {}, defaults, options );
+        this.updatePlaceholder = true;
 
         /** BACKWARDS COMPATIBILITY **/
         if( 'placeholder' in this.options ) {
@@ -291,6 +292,8 @@
             optionsWrap.on('click', '.ms-selectall', function( event ){
                 event.preventDefault();
 
+                instance.updatePlaceholder = false;
+
                 if( $(this).hasClass('global') ) {
                     // check if any selected if so then select them
                     if( optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').length ) {
@@ -313,6 +316,10 @@
                         optgroup.find('li.selected:visible input[type="checkbox"]').trigger('click');
                     }
                 }
+
+                instance.updatePlaceholder = true;
+
+                instance._updatePlaceholderText();
             });
 
             // add options to wrapper
@@ -625,6 +632,10 @@
         /** PRIVATE FUNCTIONS **/
         // update selected placeholder text
         _updatePlaceholderText: function(){
+            if( !this.updatePlaceholder ) {
+                return;
+            }
+
             var instance    = this;
             var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');

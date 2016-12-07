@@ -1,0 +1,6 @@
+2.3.1 (2016-12-06)
+==================
+Optimize select all (should be 2-3x faster)
+
+
+*Previous version changes not documented outside of github commit log
