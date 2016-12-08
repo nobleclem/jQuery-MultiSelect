@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.2
+ * @Version: 2.3.3
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -610,6 +610,12 @@
                     });
                 }
             }
+        },
+
+        /* UPDATE MULTISELECT CONFIG OPTIONS */
+        settings: function( options ) {
+            this.options = $.extend( true, {}, this.options, options );
+            this.reload();
         },
 
         /* RESET THE DOM */

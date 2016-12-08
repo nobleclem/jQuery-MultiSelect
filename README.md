@@ -87,6 +87,16 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 ```
 
 
+**settings**
+
+Update Multiselect list settings after it has been rendered.  It accepts the same [options](https://github.com/nobleclem/jQuery-MultiSelect#options) listed above.
+
+*This will reload the plugin for the select list it references*
+
+`$('select[multiple]').multiselect( 'settings', {
+    columns: 2
+});`
+
 **unload**
 
 Disable the jquery multiselect list and show the native select list.
