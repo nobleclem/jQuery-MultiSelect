@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.1
+ * @Version: 2.3.2
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -269,14 +269,15 @@
                         }
 
                         // hide / show optgroups depending on if options within it are visible
-                        if( !instance.options.searchOptions.showOptGroups && $(this).closest('li.optgroup') ) {
-                            $(this).closest('li.optgroup').show();
+                        var optGroup = $(this).closest('li.optgroup');
+                        if( !instance.options.searchOptions.showOptGroups && optGroup ) {
+                            optGroup.show();
 
-                            if( $(this).closest('li.optgroup').find('li:visible').length ) {
-                                $(this).closest('li.optgroup').show();
+                            if( optGroup.find('li:visible').length ) {
+                                optGroup.show();
                             }
                             else {
-                                $(this).closest('li.optgroup').hide();
+                                optGroup.hide();
                             }
                         }
                     });
