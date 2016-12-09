@@ -56,6 +56,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | - noneSelected    | string   | None Selected  | None selected text             |
 | selectAll         | bool     | false          | add select all option          |
 | selectGroup       | bool     | false          | add select all optgroup option |
+| maxSelectable     | int      | false          | maximum number of selectable items, false to disable |
 | minHeight         | number   | 200            | min height of option overlay   |
 | maxHeight         | number   | null           | max height of option overlay   |
 | showCheckbox      | bool     | true           | display the option checkbox    |
