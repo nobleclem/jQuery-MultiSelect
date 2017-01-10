@@ -46,6 +46,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | columns           | int      | 1              | # of columns to show options   |
 | search            | bool     | false          | enable option search/filering  |
 | searchOptions     | object   |                |                                |
+| - delay           | int      | 250            | time (in ms) between keystrokes until search happens |
 | - showOptGroups   | bool     | false          | show option group titles if no options remaining |
 | - onSearch        | function |                | fires before search on options happens |
 | texts             | object   |                |                                |

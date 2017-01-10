@@ -38,6 +38,7 @@
         search        : false,            // include option search box
         // search filter options
         searchOptions : {
+            delay        : 250,                  // time (in ms) between keystrokes until search happens
             showOptGroups: false,                // show option group titles if no options remaining
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
@@ -258,39 +259,48 @@
                         return true;
                     }
 
-                    $(this).data('lastsearch', $(this).val() );
-
-                    // USER CALLBACK
-                    if( typeof instance.options.searchOptions.onSearch == 'function' ) {
-                        instance.options.searchOptions.onSearch( instance.element );
+                    // pause timeout
+                    if( $(this).data('searchTimeout') ) {
+                        clearTimeout( $(this).data('searchTimeout') );
                     }
 
-                    // search non optgroup li's
-                    optionsList.find('li:not(.optgroup)').each(function(){
-                        var optText = $(this).text();
+                    var thisSearchElem = $(this);
 
-                        // show option if string exists
-                        if( optText.toLowerCase().indexOf( search.val().toLowerCase() ) > -1 ) {
-                            $(this).show();
-                        }
-                        // don't hide selected items
-                        else if( !$(this).hasClass('selected') ) {
-                            $(this).hide();
+                    $(this).data('searchTimeout', setTimeout(function(){
+                        thisSearchElem.data('lastsearch', thisSearchElem.val() );
+
+                        // USER CALLBACK
+                        if( typeof instance.options.searchOptions.onSearch == 'function' ) {
+                            instance.options.searchOptions.onSearch( instance.element );
                         }
 
-                        // hide / show optgroups depending on if options within it are visible
-                        var optGroup = $(this).closest('li.optgroup');
-                        if( !instance.options.searchOptions.showOptGroups && optGroup ) {
-                            optGroup.show();
+                        // search non optgroup li's
+                        optionsList.find('li:not(.optgroup)').each(function(){
+                            var optText = $(this).text();
 
-                            if( optGroup.find('li:visible').length ) {
+                            // show option if string exists
+                            if( optText.toLowerCase().indexOf( search.val().toLowerCase() ) > -1 ) {
+                                $(this).show();
+                            }
+                            // don't hide selected items
+                            else if( !$(this).hasClass('selected') ) {
+                                $(this).hide();
+                            }
+
+                            // hide / show optgroups depending on if options within it are visible
+                            var optGroup = $(this).closest('li.optgroup');
+                            if( !instance.options.searchOptions.showOptGroups && optGroup ) {
                                 optGroup.show();
+
+                                if( optGroup.find('li:visible').length ) {
+                                    optGroup.show();
+                                }
+                                else {
+                                    optGroup.hide();
+                                }
                             }
-                            else {
-                                optGroup.hide();
-                            }
-                        }
-                    });
+                        });
+                    }, instance.options.searchOptions.delay ));
                 });
             }
 
