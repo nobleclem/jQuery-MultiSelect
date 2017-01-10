@@ -113,6 +113,13 @@ This is a quick unload/load while maintaining options during plugin initializati
 `$('select[multiple]').multiselect( 'reload' );`
 
 
+**reset**
+
+Reset the element back to its default selected values.
+
+`$('select[multiple]').multiselect( 'reset' );`
+
+
 ### Callbacks
 **onLoad**
 

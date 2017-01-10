@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.3
+ * @Version: 2.3.4
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -644,6 +644,20 @@
 
             // load element
             this.load();
+        },
+
+        // RESET BACK TO DEFAULT VALUES & RELOAD
+        reset: function() {
+            var defaultVals = [];
+            $(this.element).find('option').each(function(){
+                if( $(this).prop('defaultSelected') ) {
+                    defaultVals.push( $(this).val() );
+                }
+            });
+
+            $(this.element).val( defaultVals );
+
+            this.reload();
         },
 
         /** PRIVATE FUNCTIONS **/
