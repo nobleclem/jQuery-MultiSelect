@@ -207,6 +207,13 @@
                 $('.ms-options-wrap > .ms-options:visible').each(function(){
                     if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
                         $(this).hide();
+
+                        var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
+
+                        // USER CALLBACK
+                        if( typeof thisInst.options.onControlClose == 'function' ) {
+                            thisInst.options.onControlClose( thisInst.element );
+                        }
                     }
                 });
 
@@ -229,6 +236,9 @@
                     maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
                     optionsWrap.css( 'maxHeight', maxHeight );
+                }
+                else if( typeof instance.options.onControlClose == 'function' ) {
+                    instance.options.onControlClose( instance.element );
                 }
             }).click(function( event ){ event.preventDefault(); });
 
