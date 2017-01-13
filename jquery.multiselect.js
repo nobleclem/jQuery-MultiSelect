@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.5
+ * @Version: 2.3.6
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -47,6 +47,7 @@
             search:          'Search',         // search input placeholder text
             selectedOptions: ' selected',      // selected suffix text
             selectAll:       'Select all',     // select all text
+            unselectAll:     'Unselect all',   // unselect all text
             noneSelected:    'None Selected'   // None selected text
         },
         selectAll     : false, // add select all option
@@ -300,6 +301,8 @@
                                 }
                             }
                         });
+
+                        instance._updateSelectAllText();
                     }, instance.options.searchOptions.delay ));
                 });
             }
@@ -316,7 +319,7 @@
                 instance.updatePlaceholder = false;
 
                 if( $(this).hasClass('global') ) {
-                    // check if any selected if so then select them
+                    // check if any options are not selected if so then select them
                     if( optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').length ) {
                         optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').find('input[type="checkbox"]').trigger('click');
                     }
@@ -337,6 +340,8 @@
                         optgroup.find('li.selected:visible input[type="checkbox"]').trigger('click');
                     }
                 }
+
+                instance._updateSelectAllText();
 
                 instance.updatePlaceholder = true;
 
@@ -395,6 +400,9 @@
                 }
             });
             instance.loadOptions( options, true, false );
+
+            // update un/select all logic
+            instance._updateSelectAllText( false );
 
             // BIND SELECT ACTION
             optionsWrap.on( 'click', 'input[type="checkbox"]', function(){
@@ -671,6 +679,36 @@
         },
 
         /** PRIVATE FUNCTIONS **/
+        // update the un/select all texts based on selected options and visibility
+        _updateSelectAllText: function( visibleOnly ){
+            if( typeof visibleOnly !== 'boolean' ) {
+                visibleOnly = true;
+            }
+
+            var instance = this;
+
+            // select all not used at all so just do nothing
+            if( !instance.options.selectAll && !instance.options.selectGroup ) {
+                return;
+            }
+
+            var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
+
+            // update un/select all text
+            optionsWrap.find('.ms-selectall').each(function(){
+                var unselected = $(this).parent().find('li:not(.optgroup)').filter(':not(.selected)');
+
+                // filter out visible options
+                if( visibleOnly ) {
+                    unselected = unselected.filter(':visible');
+                }
+
+                $(this).text(
+                    unselected.length ? instance.options.texts.selectAll : instance.options.texts.unselectAll
+                );
+            });
+        },
+
         // update selected placeholder text
         _updatePlaceholderText: function(){
             if( !this.updatePlaceholder ) {

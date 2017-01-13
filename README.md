@@ -54,6 +54,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | - search          | string   | Search         | search input placeholder text  |
 | - selectedOptions | string   |  selected      | selected suffix text           |
 | - selectAll       | string   | Select all     | select all text                |
+| - unselectAll     | string   | Unselect all   | unselect all text              |
 | - noneSelected    | string   | None Selected  | None selected text             |
 | selectAll         | bool     | false          | add select all option          |
 | selectGroup       | bool     | false          | add select all optgroup option |
