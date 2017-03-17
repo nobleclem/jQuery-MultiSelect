@@ -1,3 +1,7 @@
+2.3.8 (2017-03-17)
+==================
+additional sanity checks when loading options see issue #74
+
 2.3.7 (2017-03-17)
 ==================
 (un)select all wording bugfix

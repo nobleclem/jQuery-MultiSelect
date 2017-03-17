@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.7
+ * @Version: 2.3.8
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -514,6 +514,11 @@
                         var thisGOption = thisOption.options[ gKey ];
                         var gContainer  = $('<li></li>').addClass('ms-reflow');
 
+                        // no clue what this is we hit (skip)
+                        if( !thisGOption.hasOwnProperty('value') ) {
+                            continue;
+                        }
+
                         instance._addOption( gContainer, thisGOption );
 
                         container.find('> ul').append( gContainer );
@@ -558,6 +563,10 @@
 
                         select.append( selOption );
                     }
+                }
+                else {
+                    // no clue what this is we hit (skip)
+                    continue;
                 }
 
                 if( appendContainer ) {
