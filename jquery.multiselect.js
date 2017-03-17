@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.6
+ * @Version: 2.3.7
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -420,6 +420,7 @@
                     instance.options.onOptionClick(instance.element, this);
                 }
 
+                instance._updateSelectAllText();
                 instance._updatePlaceholderText();
             });
 
