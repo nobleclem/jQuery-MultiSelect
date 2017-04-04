@@ -122,6 +122,14 @@ Reset the element back to its default selected values.
 `$('select[multiple]').multiselect( 'reset' );`
 
 
+**disable**
+
+Disable or enable the select list. If no second parameter is passed then true is assumed.
+
+`$('select[multiple]').multiselect( 'disable', true );`
+`$('select[multiple]').multiselect( 'disable', false );`
+
+
 ### Callbacks
 **onLoad**
 

@@ -1,3 +1,7 @@
+2.3.9 (2017-04-04)
+==================
+Add method to disable or enable the select list (issue #63)
+
 2.3.8 (2017-03-17)
 ==================
 additional sanity checks when loading options see issue #74

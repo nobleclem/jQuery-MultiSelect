@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.8
+ * @Version: 2.3.9
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -132,6 +132,11 @@
             // don't show checkbox (add class for css to hide checkboxes)
             if( !instance.options.showCheckbox ) {
                 optionsWrap.addClass('hide-checkbox');
+            }
+
+            // check if list is disabled
+            if( $(instance.element).prop( 'disabled' ) ) {
+                placeholder.prop( 'disabled', true );
             }
 
             // determine maxWidth
@@ -686,6 +691,13 @@
             $(this.element).val( defaultVals );
 
             this.reload();
+        },
+
+        disable: function( status ) {
+            status = (typeof status !== 'boolean') ? true : false;
+            $(this.element).prop( 'disabled', status );
+            $(this.element).next('.ms-options-wrap').find('button:first-child')
+                .prop( 'disabled', status );
         },
 
         /** PRIVATE FUNCTIONS **/
