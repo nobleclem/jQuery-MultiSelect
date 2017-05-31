@@ -40,6 +40,8 @@
         searchOptions : {
             delay        : 250,                  // time (in ms) between keystrokes until search happens
             showOptGroups: false,                // show option group titles if no options remaining
+            searchText   : true,                 // search within the text
+            searchValue  : false,                // search within the value
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
         texts: {
@@ -66,7 +68,7 @@
         // @NOTE: these are for future development
         maxWidth      : null,  // maximum width of option overlay (or selector)
         minSelect     : false, // minimum number of items that can be selected
-        maxSelect     : false, // maximum number of items that can be selected
+        maxSelect     : false  // maximum number of items that can be selected
     };
 
     var msCounter = 1;
@@ -92,6 +94,13 @@
         this.element = element;
         this.options = $.extend( true, {}, defaults, options );
         this.updatePlaceholder = true;
+
+        /* Options validation checks */
+        if (this.options.search) {
+            if (!this.options.searchOptions.searchText && !this.options.searchOptions.searchValue) {
+                throw new Error('Either searchText or searchValue should be true.');
+            }
+        }
 
         /** BACKWARDS COMPATIBILITY **/
         if( 'placeholder' in this.options ) {
@@ -280,12 +289,22 @@
                             instance.options.searchOptions.onSearch( instance.element );
                         }
 
+                        // prepare search text parameter
+                        var searchText = search.val().toLowerCase();
+
                         // search non optgroup li's
                         optionsList.find('li:not(.optgroup)').each(function(){
-                            var optText = $(this).text();
+                            var $optLi = $(this);
+                            var match = false;
+                            if( instance.options.searchOptions.searchText ) {
+                                match = $optLi.text().toLowerCase().indexOf( searchText ) > -1;
+                            }
+                            if( !match && instance.options.searchOptions.searchValue ) {
+                                match = $optLi.find('input').val().toLowerCase().indexOf( searchText ) > -1;
+                            }
 
                             // show option if string exists
-                            if( optText.toLowerCase().indexOf( search.val().toLowerCase() ) > -1 ) {
+                            if( match ) {
                                 $(this).show();
                             }
                             // don't hide selected items
