@@ -1,3 +1,7 @@
+2.3.10 (2017-06-01)
+===================
+Performance improvements on loading, searching, option selection.
+
 2.3.9 (2017-04-04)
 ==================
 Add method to disable or enable the select list (issue #63)

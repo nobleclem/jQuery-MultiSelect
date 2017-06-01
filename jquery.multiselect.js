@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.9
+ * @Version: 2.3.10
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -91,6 +91,7 @@
     {
         this.element = element;
         this.options = $.extend( true, {}, defaults, options );
+        this.updateSelectAll   = true;
         this.updatePlaceholder = true;
 
         /** BACKWARDS COMPATIBILITY **/
@@ -188,18 +189,16 @@
             // hide options menus if click happens off of the list placeholder button
             $(document).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
-                    if( $('.ms-options-wrap > .ms-options:visible').length ) {
-                        $('.ms-options-wrap > .ms-options:visible').each(function(){
-                            $(this).hide();
+                    $('.ms-options-wrap > .ms-options.ms-active').each(function(){
+                        $(this).removeClass('ms-active').hide();
 
-                            var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
+                        var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
-                            // USER CALLBACK
-                            if( typeof thisInst.options.onControlClose == 'function' ) {
-                                thisInst.options.onControlClose( thisInst.element );
-                            }
-                        });
-                    }
+                        // USER CALLBACK
+                        if( typeof thisInst.options.onControlClose == 'function' ) {
+                            thisInst.options.onControlClose( thisInst.element );
+                        }
+                    });
                 }
             });
 
@@ -211,9 +210,9 @@
                 }
 
                 // hide other menus before showing this one
-                $('.ms-options-wrap > .ms-options:visible').each(function(){
+                $('.ms-options-wrap > .ms-options.ms-active').each(function(){
                     if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
-                        $(this).hide();
+                        $(this).removeClass('ms-active').hide();
 
                         var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
@@ -225,10 +224,10 @@
                 });
 
                 // show/hide options
-                optionsWrap.toggle();
+                optionsWrap.toggleClass('ms-active').toggle();
 
                 // recalculate height
-                if( optionsWrap.is(':visible') ) {
+                if( optionsWrap.hasClass('.ms-active') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
                     // cacl default maxHeight
@@ -281,31 +280,26 @@
                         }
 
                         // search non optgroup li's
-                        optionsList.find('li:not(.optgroup)').each(function(){
-                            var optText = $(this).text();
+                        var searchString = search.val().toLowerCase();
+                        if( searchString ) {
+                            optionsList.find('li[data-search-term*="'+ searchString +'"]:not(.optgroup)').removeClass('ms-hidden').show();
+                            optionsList.find('li:not([data-search-term*="'+ searchString +'"], .optgroup)').addClass('ms-hidden').hide();
+                        }
+                        else {
+                            optionsList.find('.ms-hidden').removeClass('ms-hidden').show();
+                        }
 
-                            // show option if string exists
-                            if( optText.toLowerCase().indexOf( search.val().toLowerCase() ) > -1 ) {
-                                $(this).show();
-                            }
-                            // don't hide selected items
-                            else if( !$(this).hasClass('selected') ) {
-                                $(this).hide();
-                            }
-
-                            // hide / show optgroups depending on if options within it are visible
-                            var optGroup = $(this).closest('li.optgroup');
-                            if( !instance.options.searchOptions.showOptGroups && optGroup ) {
-                                optGroup.show();
-
-                                if( optGroup.find('li:visible').length ) {
-                                    optGroup.show();
+                        // show/hide optgroups based on if there are items visible within
+                        if( !instance.options.searchOptions.showOptGroups ) {
+                            optionsList.find('.optgroup').each(function(){
+                                if( $(this).find('li:not(.ms-hidden)').length ) {
+                                    $(this).show();
                                 }
                                 else {
-                                    optGroup.hide();
+                                    $(this).hide();
                                 }
-                            }
-                        });
+                            });
+                        }
 
                         instance._updateSelectAllText();
                     }, instance.options.searchOptions.delay ));
@@ -321,35 +315,36 @@
             optionsWrap.on('click', '.ms-selectall', function( event ){
                 event.preventDefault();
 
+                instance.updateSelectAll   = false;
                 instance.updatePlaceholder = false;
 
                 if( $(this).hasClass('global') ) {
                     // check if any options are not selected if so then select them
-                    if( optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').length ) {
-                        optionsList.find('li:not(.optgroup)').filter(':not(.selected)').filter(':visible').find('input[type="checkbox"]').trigger('click');
+                    if( optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').length ) {
+                        optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').find('input[type="checkbox"]').trigger('click');
                     }
                     // deselect everything
                     else {
-                        optionsList.find('li:not(.optgroup).selected:visible input[type="checkbox"]').trigger('click');
+                        optionsList.find('li:not(.optgroup, .ms-hidden).selected input[type="checkbox"]').trigger('click');
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
                     var optgroup = $(this).closest('li.optgroup');
 
                     // check if any selected if so then select them
-                    if( optgroup.find('li:not(.selected)').filter(':visible').length ) {
-                        optgroup.find('li:not(.selected):visible input[type="checkbox"]').trigger('click');
+                    if( optgroup.find('li:not(.selected, .ms-hidden)').length ) {
+                        optgroup.find('li:not(.selected, .ms-hidden) input[type="checkbox"]').trigger('click');
                     }
                     // deselect everything
                     else {
-                        optgroup.find('li.selected:visible input[type="checkbox"]').trigger('click');
+                        optgroup.find('li.selected:not(.ms-hidden) input[type="checkbox"]').trigger('click');
                     }
                 }
 
-                instance._updateSelectAllText();
-
+                instance.updateSelectAll   = true;
                 instance.updatePlaceholder = true;
 
+                instance._updateSelectAllText();
                 instance._updatePlaceholderText();
             });
 
@@ -579,19 +574,19 @@
                 }
             }
 
-            optionsList.find('.ms-reflow input[type="checkbox"]').each(function( idx ){
-                if( $(this).css('display').match(/block$/) ) {
-                    var checkboxWidth = $(this).outerWidth();
-                        checkboxWidth = checkboxWidth ? checkboxWidth : 15;
+            // pad out label for room for the checkbox
+            var chkbx = optionsList.find('.ms-reflow input[type="checkbox"]').eq(0);
+            if( chkbx.length && chkbx.css('display').match(/block$/) ) {
+                var checkboxWidth = chkbx.outerWidth();
+                    checkboxWidth = checkboxWidth ? checkboxWidth : 15;
 
-                    $(this).closest('label').css(
-                        'padding-left',
-                        (parseInt( $(this).closest('label').css('padding-left') ) * 2) + checkboxWidth
-                    );
+                optionsList.find('.ms-reflow label').css(
+                    'padding-left',
+                    (parseInt( chkbx.closest('label').css('padding-left') ) * 2) + checkboxWidth
+                );
 
-                    $(this).closest('.ms-reflow').removeClass('ms-reflow');
-                }
-            });
+                optionsList.find('.ms-reflow').removeClass('ms-reflow');
+            }
 
             // update placeholder text
             instance._updatePlaceholderText();
@@ -703,6 +698,10 @@
         /** PRIVATE FUNCTIONS **/
         // update the un/select all texts based on selected options and visibility
         _updateSelectAllText: function( visibleOnly ){
+            if( !this.updateSelectAll ) {
+                return;
+            }
+
             if( typeof visibleOnly !== 'boolean' ) {
                 visibleOnly = true;
             }
@@ -718,12 +717,7 @@
 
             // update un/select all text
             optionsWrap.find('.ms-selectall').each(function(){
-                var unselected = $(this).parent().find('li:not(.optgroup)').filter(':not(.selected)');
-
-                // filter out visible options
-                if( visibleOnly ) {
-                    unselected = unselected.filter(':visible');
-                }
+                var unselected = $(this).parent().find('li:not(.optgroup,.selected,.ms-hidden)');
 
                 $(this).text(
                     unselected.length ? instance.options.texts.selectAll : instance.options.texts.unselectAll
@@ -744,9 +738,11 @@
 
             // get selected options
             var selOpts = [];
-            select.find('option:selected').each(function(){
-                selOpts.push( $(this).text() );
-            });
+            for( key in select.val() ) {
+                selOpts.push(
+                    select.find('option[value="'+ select.val()[ key ] +'"]').text()
+                );
+            }
 
             // UPDATE PLACEHOLDER TEXT WITH OPTIONS SELECTED
             placeholder.text( selOpts.join( ', ' ) );
@@ -784,7 +780,9 @@
 
         // Add option to the custom dom list
         _addOption: function( container, option ) {
-            container.text( option.name );
+            var thisOption = $('<label></label>')
+                .attr( 'for', 'ms-opt-'+ msCounter )
+                .text( option.name );
 
             var thisCheckbox = $('<input type="checkbox" value="" title="" />')
                 .val( option.value )
@@ -796,7 +794,7 @@
                 thisCheckbox.attr( option.attributes );
             }
 
-            container.prepend( thisCheckbox );
+            thisOption.prepend( thisCheckbox );
 
             if( option.checked ) {
                 container.addClass('default');
@@ -804,8 +802,7 @@
                 container.find( 'input[type="checkbox"]' ).prop( 'checked', true );
             }
 
-            var label = $('<label></label>').attr( 'for', 'ms-opt-'+ msCounter );
-            container.wrapInner( label );
+            container.attr( 'data-search-term', option.name.toLowerCase() ).prepend( thisOption );
 
             msCounter = msCounter + 1;
         },
