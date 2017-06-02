@@ -45,6 +45,12 @@
     background: white;
     z-index: 2000;
     border: 1px solid #aaa;
+    overflow: auto;
+    visibility: hidden;
+}
+
+.ms-options-wrap > .ms-options.ms-active {
+    visibility: visible
 }
 
 .ms-options-wrap > .ms-options > .ms-search input {
@@ -74,6 +80,10 @@
     list-style-type: none;
     padding: 0;
     margin: 0;
+}
+
+.ms-options-wrap > .ms-options > ul li.ms-hidden {
+    display: none;
 }
 
 .ms-options-wrap > .ms-options > ul > li.optgroup {

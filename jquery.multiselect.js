@@ -1,13 +1,10 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.3.10
+ * @Version: 2.3.11
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
  * @Source: https://github.com/nobleclem/jQuery-MultiSelect
- * @Notes: If select list is hidden on page load use the jquery.actual plugin
- *         to resolve issues with preselected items placeholder text
- *         https://github.com/dreamerslab/jquery.actual
  *
  * Usage:
  *     $('select[multiple]').multiselect();
@@ -36,12 +33,15 @@
     var defaults = {
         columns       : 1,                // how many columns should be use to show options
         search        : false,            // include option search box
+
         // search filter options
         searchOptions : {
             delay        : 250,                  // time (in ms) between keystrokes until search happens
             showOptGroups: false,                // show option group titles if no options remaining
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
+
+        // plugin texts
         texts: {
             placeholder:     'Select options', // text to use in dummy input
             search:          'Search',         // search input placeholder text
@@ -50,23 +50,25 @@
             unselectAll:     'Unselect all',   // unselect all text
             noneSelected:    'None Selected'   // None selected text
         },
-        selectAll     : false, // add select all option
-        selectGroup   : false, // select entire optgroup
-        minHeight     : 200,   // minimum height of option overlay
-        maxHeight     : null,  // maximum height of option overlay
-        showCheckbox  : true,  // display the checkbox to the user
-        jqActualOpts  : {},    // options for jquery.actual
-        optionAttributes: [],  // attributes to copy to the checkbox from the option element
+
+        // general options
+        selectAll         : false, // add select all option
+        selectGroup       : false, // select entire optgroup
+        minHeight         : 200,   // minimum height of option overlay
+        maxHeight         : null,  // maximum height of option overlay
+        maxWidth          : null,  // maximum width of option overlay (or selector)
+        maxPlaceholderOpts: 10, // maximum number of placeholder options to show until "# selected" shown instead
+        showCheckbox      : true,  // display the checkbox to the user
+        optionAttributes  : [],  // attributes to copy to the checkbox from the option element
 
         // Callbacks
-        onLoad        : function( element ) {},  // fires at end of list initialization
+        onLoad        : function( element ){},  // fires at end of list initialization
         onOptionClick : function( element, option ){}, // fires when an option is clicked
         onControlClose: function( element ){}, // fires when the options list is closed
 
         // @NOTE: these are for future development
-        maxWidth      : null,  // maximum width of option overlay (or selector)
-        minSelect     : false, // minimum number of items that can be selected
-        maxSelect     : false, // maximum number of items that can be selected
+        minSelect: false, // minimum number of items that can be selected
+        maxSelect: false, // maximum number of items that can be selected
     };
 
     var msCounter = 1;
@@ -142,11 +144,11 @@
 
             // determine maxWidth
             var maxWidth = null;
-            if( typeof instance.options.width == 'number' ) {
+            if( typeof instance.options.maxWidth == 'number' ) {
                 optionsWrap.parent().css( 'position', 'relative' );
                 maxWidth = instance.options.width;
             }
-            else if( typeof instance.options.width == 'string' ) {
+            else if( typeof instance.options.maxWidth == 'string' ) {
                 $( instance.options.width ).css( 'position', 'relative' );
                 maxWidth = '100%';
             }
@@ -169,8 +171,7 @@
                 maxWidth : maxWidth,
                 minHeight: instance.options.minHeight,
                 maxHeight: maxHeight,
-                overflow : 'auto'
-            }).hide();
+            });
 
             // isolate options scroll
             // @source: https://github.com/nobleclem/jQuery-IsolatedScroll
@@ -190,7 +191,7 @@
             $(document).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
                     $('.ms-options-wrap > .ms-options.ms-active').each(function(){
-                        $(this).removeClass('ms-active').hide();
+                        $(this).removeClass('ms-active');
 
                         var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
@@ -212,7 +213,7 @@
                 // hide other menus before showing this one
                 $('.ms-options-wrap > .ms-options.ms-active').each(function(){
                     if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
-                        $(this).removeClass('ms-active').hide();
+                        $(this).removeClass('ms-active');
 
                         var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
@@ -224,7 +225,7 @@
                 });
 
                 // show/hide options
-                optionsWrap.toggleClass('ms-active').toggle();
+                optionsWrap.toggleClass('ms-active');
 
                 // recalculate height
                 if( optionsWrap.hasClass('.ms-active') ) {
@@ -280,13 +281,13 @@
                         }
 
                         // search non optgroup li's
-                        var searchString = search.val().toLowerCase();
+                        var searchString = $.trim( search.val().toLowerCase() );
                         if( searchString ) {
-                            optionsList.find('li[data-search-term*="'+ searchString +'"]:not(.optgroup)').removeClass('ms-hidden').show();
-                            optionsList.find('li:not([data-search-term*="'+ searchString +'"], .optgroup)').addClass('ms-hidden').hide();
+                            optionsList.find('li[data-search-term*="'+ searchString +'"]:not(.optgroup)').removeClass('ms-hidden');
+                            optionsList.find('li:not([data-search-term*="'+ searchString +'"], .optgroup)').addClass('ms-hidden');
                         }
                         else {
-                            optionsList.find('.ms-hidden').removeClass('ms-hidden').show();
+                            optionsList.find('.ms-hidden').removeClass('ms-hidden');
                         }
 
                         // show/hide optgroups based on if there are items visible within
@@ -318,14 +319,19 @@
                 instance.updateSelectAll   = false;
                 instance.updatePlaceholder = false;
 
+                var select = optionsWrap.parent().prev();
+
                 if( $(this).hasClass('global') ) {
                     // check if any options are not selected if so then select them
                     if( optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').length ) {
-                        optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').find('input[type="checkbox"]').trigger('click');
+                        // get unselected vals, marke as selected, return val list
+                        optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').addClass('selected');
+                        optionsList.find('li.selected input[type="checkbox"]').prop( 'checked', true );
                     }
                     // deselect everything
                     else {
-                        optionsList.find('li:not(.optgroup, .ms-hidden).selected input[type="checkbox"]').trigger('click');
+                        optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected')
+                        optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
@@ -333,11 +339,13 @@
 
                     // check if any selected if so then select them
                     if( optgroup.find('li:not(.selected, .ms-hidden)').length ) {
-                        optgroup.find('li:not(.selected, .ms-hidden) input[type="checkbox"]').trigger('click');
+                        optgroup.find('li:not(.selected, .ms-hidden)').addClass('selected');
+                        optgroup.find('li.selected input[type="checkbox"]').prop( 'checked', true );
                     }
                     // deselect everything
                     else {
-                        optgroup.find('li.selected:not(.ms-hidden) input[type="checkbox"]').trigger('click');
+                        optgroup.find('li:not(.ms-hidden).selected').removeClass('selected');
+                        optgroup.find('li:not(.ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
                     }
                 }
 
@@ -465,7 +473,7 @@
                 }
 
                 var thisOption      = options[ key ];
-                var container       = $('<li></li>');
+                var container       = $('<li/>');
                 var appendContainer = true;
 
                 // OPTGROUP
@@ -501,7 +509,7 @@
                             container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')
                         }
 
-                        container.append('<ul></ul>');
+                        container.append('<ul/>');
                     }
 
                     for( var gKey in thisOption.options ) {
@@ -512,7 +520,7 @@
                         }
 
                         var thisGOption = thisOption.options[ gKey ];
-                        var gContainer  = $('<li></li>').addClass('ms-reflow');
+                        var gContainer  = $('<li/>').addClass('ms-reflow');
 
                         // no clue what this is we hit (skip)
                         if( !thisGOption.hasOwnProperty('value') ) {
@@ -735,74 +743,62 @@
             var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
             var select      = optionsWrap.parent().prev();
+            var selectVals  = select.val() ? select.val() : [];
 
             // get selected options
             var selOpts = [];
-            for( key in select.val() ) {
+            for( key in selectVals ) {
                 selOpts.push(
-                    select.find('option[value="'+ select.val()[ key ] +'"]').text()
+                    $.trim( select.find('option[value="'+ selectVals[ key ] +'"]').text() )
                 );
+
+                if( selOpts.length >= instance.options.maxPlaceholderOpts ) {
+                    break;
+                }
             }
 
             // UPDATE PLACEHOLDER TEXT WITH OPTIONS SELECTED
             placeholder.text( selOpts.join( ', ' ) );
-            var copy = placeholder.clone().css({
-                display   : 'inline',
-                width     : 'auto',
-                visibility: 'hidden'
-            }).appendTo( optionsWrap.parent() );
 
-            // if the jquery.actual plugin is loaded use it to get the widths
-            var copyWidth  = (typeof $.fn.actual !== 'undefined') ? copy.actual( 'width', instance.options.jqActualOpts ) : copy.width();
-            var placeWidth = (typeof $.fn.actual !== 'undefined') ? placeholder.actual( 'width', instance.options.jqActualOpts ) : placeholder.width();
+            var placeholderElem = placeholder.get(0);
 
             // if copy is larger than button width use "# selected"
-            if( copyWidth > placeWidth ) {
-                placeholder.text( selOpts.length + instance.options.texts.selectedOptions );
-            }
-            // if options selected then use those
-            else if( selOpts.length ) {
-                // trim each element in case of extra spaces
-                placeholder.text(
-                    selOpts.map(function( element ){
-                        return element.trim();
-                    }).join(', ')
-                );
+            if( (placeholderElem.scrollWidth > placeholderElem.clientWidth) || (selOpts.length != selectVals.length ) ) {
+                placeholder.text( select.val().length + instance.options.texts.selectedOptions );
             }
             // replace placeholder text
-            else {
+            else if( !selOpts.length ) {
                 placeholder.text( instance.options.texts.placeholder );
             }
-
-            // remove dummy element
-            copy.remove();
         },
 
         // Add option to the custom dom list
         _addOption: function( container, option ) {
-            var thisOption = $('<label></label>')
-                .attr( 'for', 'ms-opt-'+ msCounter )
-                .text( option.name );
+            var thisOption = $('<label/>', {
+                for : 'ms-opt-'+ msCounter,
+                text: option.name
+            });
 
-            var thisCheckbox = $('<input type="checkbox" value="" title="" />')
-                .val( option.value )
-                .attr( 'title', option.name )
-                .attr( 'id', 'ms-opt-'+ msCounter );
+            var thisCheckbox = $('<input>', {
+                type : 'checkbox',
+                title: option.name,
+                id   : 'ms-opt-'+ msCounter,
+                value: option.value
+            });
 
             // add user defined attributes
             if( option.hasOwnProperty('attributes') && Object.keys( option.attributes ).length ) {
                 thisCheckbox.attr( option.attributes );
             }
 
-            thisOption.prepend( thisCheckbox );
-
             if( option.checked ) {
-                container.addClass('default');
-                container.addClass('selected');
-                container.find( 'input[type="checkbox"]' ).prop( 'checked', true );
+                container.addClass('default selected');
+                thisCheckbox.prop( 'checked', true );
             }
 
-            container.attr( 'data-search-term', option.name.toLowerCase() ).prepend( thisOption );
+            thisOption.prepend( thisCheckbox );
+
+            container.attr( 'data-search-term', $.trim( option.name.toLowerCase() ) ).prepend( thisOption );
 
             msCounter = msCounter + 1;
         },
