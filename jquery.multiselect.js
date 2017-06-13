@@ -228,7 +228,7 @@
                 optionsWrap.toggleClass('ms-active');
 
                 // recalculate height
-                if( optionsWrap.hasClass('.ms-active') ) {
+                if( optionsWrap.hasClass('ms-active') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
                     // cacl default maxHeight
@@ -325,13 +325,18 @@
                     // check if any options are not selected if so then select them
                     if( optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').length ) {
                         // get unselected vals, marke as selected, return val list
-                        optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').addClass('selected');
-                        optionsList.find('li.selected input[type="checkbox"]').prop( 'checked', true );
+                        optionsList.find('li input[type="checkbox"]').each(function () {
+                            if (!$(this).is(":checked")) {
+                                $(this).click();
+                            }
+                        });
                     }
                     // deselect everything
                     else {
-                        optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected')
-                        optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
+                        optionsList.find('li:not(.optgroup, .ms-hidden) input[type="checkbox"]').each(function () {
+                            if ($(this).is(":checked"))
+                                $(this).click();
+                        });
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
