@@ -1,3 +1,7 @@
+2.3.12 (2017-06-16)
+===================
+Fix issue where select all wasn't completly working re issue #92
+
 2.3.11 (2017-06-02)
 ===================
 More Performance improvements on loading, select all, show/hide dropdown.
