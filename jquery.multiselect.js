@@ -702,7 +702,7 @@
         },
 
         disable: function( status ) {
-            status = (typeof status !== 'boolean') ? true : false;
+            status = (typeof status === 'boolean') ? status : true;
             $(this.element).prop( 'disabled', status );
             $(this.element).next('.ms-options-wrap').find('button:first-child')
                 .prop( 'disabled', status );
