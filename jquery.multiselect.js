@@ -228,7 +228,7 @@
                 optionsWrap.toggleClass('ms-active');
 
                 // recalculate height
-                if( optionsWrap.hasClass('.ms-active') ) {
+                if( optionsWrap.hasClass('ms-active') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
                     // cacl default maxHeight
