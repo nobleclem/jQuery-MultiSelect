@@ -1,3 +1,20 @@
+2.3.13 (2017-06-16)
+===================
+Fix disable method issue, bugfix with hasClass() call
+
+2.3.12 (2017-06-16)
+===================
+Fix issue where select all wasn't completly working re issue #92
+
+2.3.11 (2017-06-02)
+===================
+More Performance improvements on loading, select all, show/hide dropdown.
+Remove jquery.actual usage for a more optimal clientWidth/scrollWidth usage
+
+2.3.10 (2017-06-01)
+===================
+Performance improvements on loading, searching, option selection.
+
 2.3.9 (2017-04-04)
 ==================
 Add method to disable or enable the select list (issue #63)
