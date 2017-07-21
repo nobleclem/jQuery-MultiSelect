@@ -47,6 +47,8 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | searchOptions      | object   |                |                                |
 | - delay            | int      | 250            | time (in ms) between keystrokes until search happens |
 | - showOptGroups    | bool     | false          | show option group titles if no options remaining |
+| - searchText       | bool     | true           | search within option text      |
+| - searchValue      | bool     | false          | search within option value     |
 | - onSearch         | function |                | fires before search on options happens |
 | texts              | object   |                |                                |
 | - placeholder      | string   | Select options | default text for dropdown      |
