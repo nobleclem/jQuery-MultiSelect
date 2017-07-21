@@ -324,16 +324,14 @@
                 if( $(this).hasClass('global') ) {
                     // check if any options are not selected if so then select them
                     if( optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').length ) {
-                        // get unselected vals, marke as selected, return val list
+                        // get unselected vals, mark as selected, return val list
                         optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').addClass('selected');
                         optionsList.find('li.selected input[type="checkbox"]').prop( 'checked', true );
-                        select.find('option').prop( 'selected', true );
                     }
                     // deselect everything
                     else {
                         optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected')
                         optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
-                        select.find('option').prop( 'selected', false );
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
@@ -344,15 +342,19 @@
                     if( optgroup.find('li:not(.selected, .ms-hidden)').length ) {
                         optgroup.find('li:not(.selected, .ms-hidden)').addClass('selected');
                         optgroup.find('li.selected input[type="checkbox"]').prop( 'checked', true );
-                        select.find( 'optgroup[label="'+ optgroupLabel +'"] option' ).prop( 'selected', true );
                     }
                     // deselect everything
                     else {
                         optgroup.find('li:not(.ms-hidden).selected').removeClass('selected');
                         optgroup.find('li:not(.ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
-                        select.find( 'optgroup[label="'+ optgroupLabel +'"] option' ).prop( 'selected', false );
                     }
                 }
+
+                var vals = [];
+                optionsList.find('li.selected input[type="checkbox"]').each(function(){
+                    vals.push( $(this).val() );
+                });
+                select.val( vals );
 
                 instance.updateSelectAll   = true;
                 instance.updatePlaceholder = true;
