@@ -38,6 +38,8 @@
         searchOptions : {
             delay        : 250,                  // time (in ms) between keystrokes until search happens
             showOptGroups: false,                // show option group titles if no options remaining
+            searchText   : true,                 // search within the text
+            searchValue  : false,                // search within the value
             onSearch     : function( element ){} // fires on keyup before search on options happens
         },
 
@@ -95,6 +97,13 @@
         this.options = $.extend( true, {}, defaults, options );
         this.updateSelectAll   = true;
         this.updatePlaceholder = true;
+
+        /* Options validation checks */
+        if (this.options.search) {
+            if (!this.options.searchOptions.searchText && !this.options.searchOptions.searchValue) {
+                throw new Error('Either searchText or searchValue should be true.');
+            }
+        }
 
         /** BACKWARDS COMPATIBILITY **/
         if( 'placeholder' in this.options ) {
@@ -781,6 +790,7 @@
 
         // Add option to the custom dom list
         _addOption: function( container, option ) {
+            var instance = this;
             var thisOption = $('<label/>', {
                 for : 'ms-opt-'+ msCounter,
                 text: option.name
@@ -805,7 +815,15 @@
 
             thisOption.prepend( thisCheckbox );
 
-            container.attr( 'data-search-term', $.trim( option.name.toLowerCase() ) ).prepend( thisOption );
+            var searchTerm = '';
+            if( instance.options.searchOptions.searchText ) {
+                searchTerm += ' ' + option.name.toLowerCase();
+            }
+            if( instance.options.searchOptions.searchValue ) {
+                searchTerm += ' ' + option.value.toLowerCase();
+            }
+
+            container.attr( 'data-search-term', $.trim( searchTerm ) ).prepend( thisOption );
 
             msCounter = msCounter + 1;
         },
