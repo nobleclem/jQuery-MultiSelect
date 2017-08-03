@@ -155,7 +155,7 @@
             var maxWidth = null;
             if( typeof instance.options.maxWidth == 'number' ) {
                 optionsWrap.parent().css( 'position', 'relative' );
-                maxWidth = instance.options.width;
+                maxWidth = instance.options.maxWidth;
             }
             else if( typeof instance.options.maxWidth == 'string' ) {
                 $( instance.options.width ).css( 'position', 'relative' );
@@ -176,6 +176,8 @@
             // maxHeight cannot be less than options.minHeight
             maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
+            optionsWrap.parent().css( 'max-width', maxWidth );
+            
             optionsWrap.css({
                 maxWidth : maxWidth,
                 minHeight: instance.options.minHeight,
