@@ -40,34 +40,35 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 
 
 ### Options
-| Option             | Values   | Default        | Description                    |
-| ------------------ | -------- | -------------- | ------------------------------ |
-| columns            | int      | 1              | # of columns to show options   |
-| search             | bool     | false          | enable option search/filering  |
-| searchOptions      | object   |                |                                |
-| - delay            | int      | 250            | time (in ms) between keystrokes until search happens |
-| - showOptGroups    | bool     | false          | show option group titles if no options remaining |
-| - searchText       | bool     | true           | search within option text      |
-| - searchValue      | bool     | false          | search within option value     |
-| - onSearch         | function |                | fires before search on options happens |
-| texts              | object   |                |                                |
-| - placeholder      | string   | Select options | default text for dropdown      |
-| - search           | string   | Search         | search input placeholder text  |
-| - selectedOptions  | string   |  selected      | selected suffix text           |
-| - selectAll        | string   | Select all     | select all text                |
-| - unselectAll      | string   | Unselect all   | unselect all text              |
-| - noneSelected     | string   | None Selected  | None selected text             |
-| selectAll          | bool     | false          | add select all option          |
-| selectGroup        | bool     | false          | add select all optgroup option |
-| minHeight          | number   | 200            | min height of option overlay   |
-| maxHeight          | number   | null           | max height of option overlay   |
-| maxWidth           | number   | null           | maximum width of option overlay (or selector) |
-| maxPlaceholderOpts | number   | 10             | maximum number of placeholder options to show until "# selected" shown instead |
-| showCheckbox       | bool     | true           | display the option checkbox    |
-| onLoad             | function |                | fires at end of initial loading, hides native select list |
-| onOptionClick      | function |                | fires after on option is clicked |
-| onControlClose     | function |                | fires when the options list is closed |
-| optionAttributes   | array    |                | array of attribute keys to copy to the checkbox input |
+| Option              | Values   | Default        | Description                    |
+| ------------------- | -------- | -------------- | ------------------------------ |
+| columns             | int      | 1              | # of columns to show options   |
+| search              | bool     | false          | enable option search/filering  |
+| searchOptions       | object   |                |                                |
+| - delay             | int      | 250            | time (in ms) between keystrokes until search happens |
+| - showOptGroups     | bool     | false          | show option group titles if no options remaining |
+| - searchText        | bool     | true           | search within option text      |
+| - searchValue       | bool     | false          | search within option value     |
+| - onSearch          | function |                | fires before search on options happens |
+| texts               | object   |                |                                |
+| - placeholder       | string   | Select options | default text for dropdown      |
+| - search            | string   | Search         | search input placeholder text  |
+| - selectedOptions   | string   |  selected      | selected suffix text           |
+| - selectAll         | string   | Select all     | select all text                |
+| - unselectAll       | string   | Unselect all   | unselect all text              |
+| - noneSelected      | string   | None Selected  | None selected text             |
+| selectAll           | bool     | false          | add select all option          |
+| selectGroup         | bool     | false          | add select all optgroup option |
+| minHeight           | number   | 200            | min height of option overlay   |
+| maxHeight           | number   | null           | max height of option overlay   |
+| maxWidth            | number   | null           | maximum width of option overlay (or selector) |
+| maxPlaceholderWidth | number   | null           | maximum width of placeholder button |
+| maxPlaceholderOpts  | number   | 10             | maximum number of placeholder options to show until "# selected" shown instead |
+| showCheckbox        | bool     | true           | display the option checkbox    |
+| onLoad              | function |                | fires at end of initial loading, hides native select list |
+| onOptionClick       | function |                | fires after on option is clicked |
+| onControlClose      | function |                | fires when the options list is closed |
+| optionAttributes    | array    |                | array of attribute keys to copy to the checkbox input |
 
 
 ### Methods

@@ -18,6 +18,10 @@
     white-space: nowrap;
 }
 
+.ms-options-wrap > button > span {
+    display: inline-block;
+}
+
 .ms-options-wrap > button[disabled] {
     background-color: #e5e9ed;
     color: #808080;

@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4
+ * @Version: 2.4.1
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -31,8 +31,8 @@
  **/
 (function($){
     var defaults = {
-        columns       : 1,                // how many columns should be use to show options
-        search        : false,            // include option search box
+        columns: 1,     // how many columns should be use to show options
+        search : false, // include option search box
 
         // search filter options
         searchOptions : {
@@ -45,23 +45,24 @@
 
         // plugin texts
         texts: {
-            placeholder:     'Select options', // text to use in dummy input
-            search:          'Search',         // search input placeholder text
+            placeholder    : 'Select options', // text to use in dummy input
+            search         : 'Search',         // search input placeholder text
             selectedOptions: ' selected',      // selected suffix text
-            selectAll:       'Select all',     // select all text
-            unselectAll:     'Unselect all',   // unselect all text
-            noneSelected:    'None Selected'   // None selected text
+            selectAll      : 'Select all',     // select all text
+            unselectAll    : 'Unselect all',   // unselect all text
+            noneSelected   : 'None Selected'   // None selected text
         },
 
         // general options
-        selectAll         : false, // add select all option
-        selectGroup       : false, // select entire optgroup
-        minHeight         : 200,   // minimum height of option overlay
-        maxHeight         : null,  // maximum height of option overlay
-        maxWidth          : null,  // maximum width of option overlay (or selector)
-        maxPlaceholderOpts: 10, // maximum number of placeholder options to show until "# selected" shown instead
-        showCheckbox      : true,  // display the checkbox to the user
-        optionAttributes  : [],  // attributes to copy to the checkbox from the option element
+        selectAll          : false, // add select all option
+        selectGroup        : false, // select entire optgroup
+        minHeight          : 200,   // minimum height of option overlay
+        maxHeight          : null,  // maximum height of option overlay
+        maxWidth           : null,  // maximum width of option overlay (or selector)
+        maxPlaceholderWidth: null, // maximum width of placeholder button
+        maxPlaceholderOpts : 10, // maximum number of placeholder options to show until "# selected" shown instead
+        showCheckbox       : true,  // display the checkbox to the user
+        optionAttributes   : [],  // attributes to copy to the checkbox from the option element
 
         // Callbacks
         onLoad        : function( element ){},  // fires at end of list initialization
@@ -93,8 +94,8 @@
 
     function MultiSelect( element, options )
     {
-        this.element = element;
-        this.options = $.extend( true, {}, defaults, options );
+        this.element           = element;
+        this.options           = $.extend( true, {}, defaults, options );
         this.updateSelectAll   = true;
         this.updatePlaceholder = true;
 
@@ -134,7 +135,7 @@
             $(instance.element).addClass('jqmsLoaded').data( 'plugin_multiselect-instance', instance );
 
             // add option container
-            $(instance.element).after('<div class="ms-options-wrap"><button>None Selected</button><div class="ms-options"><ul></ul></div></div>');
+            $(instance.element).after('<div class="ms-options-wrap"><button><span>None Selected</span></button><div class="ms-options"><ul></ul></div></div>');
 
             var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
@@ -151,18 +152,9 @@
                 placeholder.prop( 'disabled', true );
             }
 
-            // determine maxWidth
-            var maxWidth = null;
-            if( typeof instance.options.maxWidth == 'number' ) {
-                optionsWrap.parent().css( 'position', 'relative' );
-                maxWidth = instance.options.width;
-            }
-            else if( typeof instance.options.maxWidth == 'string' ) {
-                $( instance.options.width ).css( 'position', 'relative' );
-                maxWidth = '100%';
-            }
-            else {
-                optionsWrap.parent().css( 'position', 'relative' );
+            // set placeholder maxWidth
+            if( instance.options.maxPlaceholderWidth ) {
+                placeholder.css( 'maxWidth', instance.options.maxPlaceholderWidth );
             }
 
             // cacl default maxHeight
@@ -177,7 +169,7 @@
             maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
             optionsWrap.css({
-                maxWidth : maxWidth,
+                maxWidth : instance.options.maxWidth,
                 minHeight: instance.options.minHeight,
                 maxHeight: maxHeight,
             });
@@ -260,7 +252,7 @@
 
             // add placeholder copy
             if( instance.options.texts.placeholder ) {
-                placeholder.text( instance.options.texts.placeholder );
+                placeholder.find('span').text( instance.options.texts.placeholder );
             }
 
             // add search box
@@ -755,11 +747,12 @@
                 return;
             }
 
-            var instance    = this;
-            var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
-            var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
-            var select      = optionsWrap.parent().prev();
-            var selectVals  = select.val() ? select.val() : [];
+            var instance       = this;
+            var placeholder    = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
+            var placeholderTxt = placeholder.find('span');
+            var optionsWrap    = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
+            var select         = optionsWrap.parent().prev();
+            var selectVals     = select.val() ? select.val() : [];
 
             // get selected options
             var selOpts = [];
@@ -774,17 +767,15 @@
             }
 
             // UPDATE PLACEHOLDER TEXT WITH OPTIONS SELECTED
-            placeholder.text( selOpts.join( ', ' ) );
-
-            var placeholderElem = placeholder.get(0);
+            placeholderTxt.text( selOpts.join( ', ' ) );
 
             // if copy is larger than button width use "# selected"
-            if( (placeholderElem.scrollWidth > placeholderElem.clientWidth) || (selOpts.length != selectVals.length ) ) {
-                placeholder.text( select.val().length + instance.options.texts.selectedOptions );
+            if( (placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length) ) {
+                placeholderTxt.text( select.val().length + instance.options.texts.selectedOptions );
             }
             // replace placeholder text
             else if( !selOpts.length ) {
-                placeholder.text( instance.options.texts.placeholder );
+                placeholderTxt.text( instance.options.texts.placeholder );
             }
         },
 
