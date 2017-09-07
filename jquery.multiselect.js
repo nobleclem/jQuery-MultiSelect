@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.1
+ * @Version: 2.4.2
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -355,7 +355,7 @@
                 optionsList.find('li.selected input[type="checkbox"]').each(function(){
                     vals.push( $(this).val() );
                 });
-                select.val( vals );
+                select.val( vals ).trigger('change');
 
                 instance.updateSelectAll   = true;
                 instance.updatePlaceholder = true;

@@ -1,5 +1,9 @@
 2.4.1 (2017-08-04)
 ==================
+resolves #104
+
+2.4.1 (2017-08-04)
+==================
 resolves #99
  - maxWidth option implementation bug
  - addition of new maxPlaceholderWidth option

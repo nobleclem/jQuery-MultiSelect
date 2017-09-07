@@ -1,15 +1,20 @@
 jQuery MultiSelect
 ==================
 
-Turn a multiselect list into a nice and easy to use list with checkboxes.
+Turn a multiselect list into a nice and easy to use list with checkboxes.  This plugin is simply an alternative interface for the native select list element.  When you check an option in the plugin the value is selected on the native list.  This allows the value to be submitted in a form as well as retreived through normal POST/GET and javascript methods.
+
+## Support
+I only provide limited support through the Github Issues area.  DO NOT ask for support via email, socialmedia, or other means.  Also check the closed issues before opening a new issue.
 
 ## Demo
 http://springstubbe.us/projects/demos/jquery-multiselect/
 
 ## Usage
 ```
+// BASIC
 $('select[multiple]').multiselect();
 
+// 4 COLUMNS with custom placeholder text
 $('select[multiple]').multiselect({
     columns: 4,
     texts: {
@@ -17,8 +22,10 @@ $('select[multiple]').multiselect({
     }
 });
 
+// RELOAD multiselect (in case you modify options or selected options in the native select list since loading the plugin)
 $('select[multiple]').multiselect('reload');
 
+// DYNAMICALLY LOAD OPTIONS
 $('select[multiple]').multiselect( 'loadOptions', [{
     name   : 'Option Name 1',
     value  : 'option-value-1',
