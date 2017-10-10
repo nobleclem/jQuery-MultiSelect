@@ -327,12 +327,12 @@
                     if( optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').length ) {
                         // get unselected vals, mark as selected, return val list
                         optionsList.find('li:not(.optgroup, .selected, .ms-hidden)').addClass('selected');
-                        optionsList.find('li.selected input[type="checkbox"]').prop( 'checked', true );
+                        optionsList.find('li.selected input[type="checkbox"]:not(:disabled)').prop( 'checked', true );
                     }
                     // deselect everything
                     else {
                         optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected')
-                        optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
+                        optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]:not(:disabled)').prop( 'checked', false );
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
@@ -342,12 +342,12 @@
                     // check if any selected if so then select them
                     if( optgroup.find('li:not(.selected, .ms-hidden)').length ) {
                         optgroup.find('li:not(.selected, .ms-hidden)').addClass('selected');
-                        optgroup.find('li.selected input[type="checkbox"]').prop( 'checked', true );
+                        optgroup.find('li.selected input[type="checkbox"]:not(:disabled)').prop( 'checked', true );
                     }
                     // deselect everything
                     else {
                         optgroup.find('li:not(.ms-hidden).selected').removeClass('selected');
-                        optgroup.find('li:not(.ms-hidden, .selected) input[type="checkbox"]').prop( 'checked', false );
+                        optgroup.find('li:not(.ms-hidden, .selected) input[type="checkbox"]:not(:disabled)').prop( 'checked', false );
                     }
                 }
 
