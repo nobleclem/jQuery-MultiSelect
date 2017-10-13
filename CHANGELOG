@@ -1,4 +1,8 @@
-2.4.1 (2017-08-04)
+2.4.2 (2017-10-13)
+==================
+Merge PR #110 exclude disabled options from (un)select all
+
+2.4.2 (2017-08-04)
 ==================
 resolves #104
 
