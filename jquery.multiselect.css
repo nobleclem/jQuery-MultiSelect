@@ -14,7 +14,7 @@
     margin-top: 1px;
     font-size: 13px;
     color: #aaa;
-    outline: none;
+    outline-offset: -2px;
     white-space: nowrap;
 }
 
