@@ -1,3 +1,10 @@
+2.4.4 (2017-10-31)
+==================
+Resolves #112, #113, #114
+- more keyboard nav support
+- moved ms-active class up to ms-options-wrap for targeting purposes
+- added ms-has-selections for when there are selected options
+
 2.4.3 (2017-10-13)
 ==================
 Merge PR #110 exclude disabled options from (un)select all
