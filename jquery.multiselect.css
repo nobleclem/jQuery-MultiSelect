@@ -40,6 +40,10 @@
     margin-top: -3px;
 }
 
+.ms-options-wrap.ms-has-selections > button {
+    color: #333;
+}
+
 .ms-options-wrap > .ms-options {
     position: absolute;
     left: 0;
@@ -53,7 +57,7 @@
     visibility: hidden;
 }
 
-.ms-options-wrap > .ms-options.ms-active {
+.ms-options-wrap.ms-active > .ms-options {
     visibility: visible
 }
 

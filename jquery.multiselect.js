@@ -191,8 +191,8 @@
             // hide options menus if click happens off of the list placeholder button
             $(document).off('click.ms-hideopts').on('click.ms-hideopts', function( event ){
                 if( !$(event.target).closest('.ms-options-wrap').length ) {
-                    $('.ms-options-wrap > .ms-options.ms-active').each(function(){
-                        $(this).removeClass('ms-active');
+                    $('.ms-options-wrap.ms-active > .ms-options').each(function(){
+                        $(this).closest('.ms-options-wrap').removeClass('ms-active');
 
                         var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
@@ -202,19 +202,32 @@
                         }
                     });
                 }
+            // hide open option lists if escape key pressed
+            }).bind('keydown', function( event ){
+                if( (event.keyCode || event.which) == 27 ) { // esc key
+                    $(this).trigger('click.ms-hideopts');
+                }
+            });
+
+            // handle pressing enter|space while tabbing through
+            placeholder.bind('keydown', function( event ){
+                var code = (event.keyCode || event.which);
+                if( (code == 13) || (code == 32) ) { // enter OR space
+                    placeholder.trigger( 'mousedown' );
+                }
             });
 
             // disable button action
             placeholder.bind('mousedown',function( event ){
                 // ignore if its not a left click
-                if( event.which != 1 ) {
+                if( event.which && (event.which != 1) ) {
                     return true;
                 }
 
                 // hide other menus before showing this one
-                $('.ms-options-wrap > .ms-options.ms-active').each(function(){
+                $('.ms-options-wrap.ms-active > .ms-options').each(function(){
                     if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
-                        $(this).removeClass('ms-active');
+                        $(this).closest('.ms-options-wrap').removeClass('ms-active');
 
                         var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
 
@@ -226,10 +239,10 @@
                 });
 
                 // show/hide options
-                optionsWrap.toggleClass('ms-active');
+                optionsWrap.closest('.ms-options-wrap').toggleClass('ms-active');
 
                 // recalculate height
-                if( optionsWrap.hasClass('ms-active') ) {
+                if( optionsWrap.closest('.ms-options-wrap').hasClass('ms-active') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
                     // cacl default maxHeight
@@ -768,6 +781,13 @@
 
             // UPDATE PLACEHOLDER TEXT WITH OPTIONS SELECTED
             placeholderTxt.text( selOpts.join( ', ' ) );
+
+            if( selOpts.length ) {
+                optionsWrap.closest('.ms-options-wrap').addClass('ms-has-selections');
+            }
+            else {
+                optionsWrap.closest('.ms-options-wrap').removeClass('ms-has-selections');
+            }
 
             // if copy is larger than button width use "# selected"
             if( (placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length) ) {
