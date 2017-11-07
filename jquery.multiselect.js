@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.4
+ * @Version: 2.4.5
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -558,7 +558,7 @@
 
                             // add custom user attributes
                             if( thisGOption.hasOwnProperty('attributes') && Object.keys( thisGOption.attributes ).length ) {
-                                //selOption.attr( thisGOption.attributes );
+                                selOption.attr( thisGOption.attributes );
                             }
 
                             // mark option as selected
@@ -766,6 +766,14 @@
             var optionsWrap    = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
             var select         = optionsWrap.parent().prev();
             var selectVals     = select.val() ? select.val() : [];
+
+            // if there are disabled options get those values as well
+            if( select.find('option:selected:disabled').length ) {
+                selectVals = [];
+                select.find('option:selected').each(function(){
+                    selectVals.push( $(this).val() );
+                });
+            }
 
             // get selected options
             var selOpts = [];
