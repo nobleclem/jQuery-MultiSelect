@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.5
+ * @Version: 2.4.6
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -99,10 +99,15 @@
         this.updateSelectAll   = true;
         this.updatePlaceholder = true;
 
+        /* Make sure its a multiselect list */
+        if( !$(this.element).attr('multiple') ) {
+            throw new Error( '[jQuery-MultiSelect] Select list must be a multiselect list in order to use this plugin' );
+        }
+
         /* Options validation checks */
-        if (this.options.search) {
-            if (!this.options.searchOptions.searchText && !this.options.searchOptions.searchValue) {
-                throw new Error('Either searchText or searchValue should be true.');
+        if( this.options.search ){
+            if( !this.options.searchOptions.searchText && !this.options.searchOptions.searchValue ){
+                throw new Error( '[jQuery-MultiSelect] Either searchText or searchValue should be true.' );
             }
         }
 

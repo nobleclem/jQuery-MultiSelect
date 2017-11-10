@@ -1,3 +1,7 @@
+2.4.6 (2017-11-10)
+==================
+Add Check to verify <select> is a multiselect list during initialization.
+
 2.4.5 (2017-11-07)
 ==================
 Resolves #115 (include disabled options in placeholder text logic)
