@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.6
+ * @Version: 2.4.7
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -89,7 +89,7 @@
     if( typeof String.prototype.trim !== 'function' ) {
         String.prototype.trim = function() {
             return this.replace(/^\s+|\s+$/g, '');
-        }
+        };
     }
 
     function MultiSelect( element, options )
@@ -145,7 +145,6 @@
             var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
             var optionsList = optionsWrap.find('> ul');
-            var hasOptGroup = $(instance.element).find('optgroup').length ? true : false;
 
             // don't show checkbox (add class for css to hide checkboxes)
             if( !instance.options.showCheckbox ) {
@@ -349,13 +348,12 @@
                     }
                     // deselect everything
                     else {
-                        optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected')
+                        optionsList.find('li:not(.optgroup, .ms-hidden).selected').removeClass('selected');
                         optionsList.find('li:not(.optgroup, .ms-hidden, .selected) input[type="checkbox"]:not(:disabled)').prop( 'checked', false );
                     }
                 }
                 else if( $(this).closest('li').hasClass('optgroup') ) {
-                    var optgroup      = $(this).closest('li.optgroup');
-                    var optgroupLabel = optgroup.find('> .label').text();
+                    var optgroup = $(this).closest('li.optgroup');
 
                     // check if any selected if so then select them
                     if( optgroup.find('li:not(.selected, .ms-hidden)').length ) {
@@ -504,6 +502,8 @@
 
                 // OPTGROUP
                 if( thisOption.hasOwnProperty('options') ) {
+                    var optGroup = $('<optgroup label="'+ thisOption.label +'"></optgroup>');
+
                     optionsList.find('> li.optgroup > span.label').each(function(){
                         if( $(this).text() == thisOption.label ) {
                             container       = $(this).closest('.optgroup');
@@ -514,11 +514,10 @@
                     // prepare to append optgroup to select element
                     if( updateSelect ) {
                         if( select.find('optgroup[label="'+ thisOption.label +'"]').length ) {
-                            var optGroup = select.find('optgroup[label="'+ thisOption.label +'"]');
+                            optGroup = select.find('optgroup[label="'+ thisOption.label +'"]');
                         }
                         else {
-                            var optGroup = $('<optgroup label="'+ thisOption.label +'"></optgroup>');
-                                select.append( optGroup );
+                            select.append( optGroup );
                         }
                     }
 
@@ -532,7 +531,7 @@
 
                         // add select all link
                         if( instance.options.selectGroup ) {
-                            container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>')
+                            container.append('<a href="#" class="ms-selectall">' + instance.options.texts.selectAll + '</a>');
                         }
 
                         container.append('<ul/>');
@@ -577,7 +576,7 @@
                 }
                 // OPTION
                 else if( thisOption.hasOwnProperty('value') ) {
-                    container.addClass('ms-reflow')
+                    container.addClass('ms-reflow');
 
                     // add option to ms dropdown
                     instance._addOption( container, thisOption );
@@ -782,7 +781,7 @@
 
             // get selected options
             var selOpts = [];
-            for( key in selectVals ) {
+            for( var key in selectVals ) {
                 selOpts.push(
                     $.trim( select.find('option[value="'+ selectVals[ key ] +'"]').text() )
                 );

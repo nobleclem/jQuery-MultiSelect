@@ -1,3 +1,8 @@
+2.4.7 (2017-11-30)
+==================
+Resolves #116
+Minor code cleanup
+
 2.4.6 (2017-11-10)
 ==================
 Add Check to verify <select> is a multiselect list during initialization.
