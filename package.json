@@ -1,28 +1,24 @@
 {
-    "author": "nobleclem",
-    "name": "jQuery-MultiSelect",
+    "author": {
+        "name": "Patrick Springstubbe",
+        "url" : "http://springstubbe.us"
+    },
+    "name": "jquery-multiselect",
     "description": "Turn a multiselect list into a nice and easy to use list with checkboxes",
     "version": "2.4.7",
-    "main": [
-        "jquery.multiselect.js",
-        "jquery.multiselect.css"
-    ],
+    "main": "jquery.multiselect.js",
     "license": "MIT",
-    "authors": [
-        "nobleclem"
-    ],
-    "moduleType": [],
     "keywords": [
         "jquery",
         "MultiSelect",
         "CheckBox"
     ],
     "homepage": "https://github.com/nobleclem/jQuery-MultiSelect",
-    "ignore": [
-        "*/.",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ]
+    "repository": {
+        "type": "git",
+        "url" : "https://github.com/nobleclem/jQuery-MultiSelect.git"
+    },
+    "peerDependencies": {
+        "jquery": ">=1.11.0"
+    }
 }
