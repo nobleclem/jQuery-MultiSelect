@@ -75,6 +75,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | onLoad              | function |                | fires at end of initial loading, hides native select list |
 | onOptionClick       | function |                | fires after on option is clicked |
 | onControlClose      | function |                | fires when the options list is closed |
+| onSelectAll         | function |                | fires when (un)select all is clicked |
 | optionAttributes    | array    |                | array of attribute keys to copy to the checkbox input |
 
 
@@ -166,6 +167,15 @@ option:  option element object
 Fires when the options list is closed
 
 `onControlClose( element )`
+
+element: select list element object
+
+
+**onSelectAll**
+
+Fires when (un)select all is clicked
+
+`onSelectAll( element )`
 
 element: select list element object
 

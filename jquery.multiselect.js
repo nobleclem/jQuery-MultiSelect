@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.7
+ * @Version: 2.4.8
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -59,15 +59,16 @@
         minHeight          : 200,   // minimum height of option overlay
         maxHeight          : null,  // maximum height of option overlay
         maxWidth           : null,  // maximum width of option overlay (or selector)
-        maxPlaceholderWidth: null, // maximum width of placeholder button
-        maxPlaceholderOpts : 10, // maximum number of placeholder options to show until "# selected" shown instead
+        maxPlaceholderWidth: null,  // maximum width of placeholder button
+        maxPlaceholderOpts : 10,    // maximum number of placeholder options to show until "# selected" shown instead
         showCheckbox       : true,  // display the checkbox to the user
-        optionAttributes   : [],  // attributes to copy to the checkbox from the option element
+        optionAttributes   : [],    // attributes to copy to the checkbox from the option element
 
         // Callbacks
-        onLoad        : function( element ){},  // fires at end of list initialization
+        onLoad        : function( element ){},         // fires at end of list initialization
         onOptionClick : function( element, option ){}, // fires when an option is clicked
-        onControlClose: function( element ){}, // fires when the options list is closed
+        onControlClose: function( element ){},         // fires when the options list is closed
+        onSelectAll   : function( element ){},         // fires when (un)select all is clicked
 
         // @NOTE: these are for future development
         minSelect: false, // minimum number of items that can be selected
@@ -375,6 +376,11 @@
 
                 instance.updateSelectAll   = true;
                 instance.updatePlaceholder = true;
+
+                // USER CALLBACK
+                if( typeof instance.options.onSelectAll == 'function' ) {
+                    instance.options.onSelectAll( instance.element );
+                }
 
                 instance._updateSelectAllText();
                 instance._updatePlaceholderText();
