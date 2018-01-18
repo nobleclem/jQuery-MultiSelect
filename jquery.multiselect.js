@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.8
+ * @Version: 2.4.9
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -141,7 +141,7 @@
             $(instance.element).addClass('jqmsLoaded').data( 'plugin_multiselect-instance', instance );
 
             // add option container
-            $(instance.element).after('<div class="ms-options-wrap"><button><span>None Selected</span></button><div class="ms-options"><ul></ul></div></div>');
+            $(instance.element).after('<div class="ms-options-wrap"><button type="button"><span>None Selected</span></button><div class="ms-options"><ul></ul></div></div>');
 
             var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
             var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
