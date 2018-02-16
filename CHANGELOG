@@ -1,3 +1,8 @@
+2.4.10 (2018-02-16)
+===================
+performance optimizations to assist with #124
+add new checkboxAutoFit option default to false
+
 2.4.9 (2018-01-18)
 ==================
 resolves #123

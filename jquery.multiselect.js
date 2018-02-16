@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.9
+ * @Version: 2.4.10
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -62,6 +62,7 @@
         maxPlaceholderWidth: null,  // maximum width of placeholder button
         maxPlaceholderOpts : 10,    // maximum number of placeholder options to show until "# selected" shown instead
         showCheckbox       : true,  // display the checkbox to the user
+        checkboxAutoFit    : false,  // auto calc checkbox padding
         optionAttributes   : [],    // attributes to copy to the checkbox from the option element
 
         // Callbacks
@@ -151,6 +152,9 @@
             if( !instance.options.showCheckbox ) {
                 optionsWrap.addClass('hide-checkbox');
             }
+            else if( instance.options.checkboxAutoFit ) {
+                optionsWrap.addClass('checkbox-autofit');
+            }
 
             // check if list is disabled
             if( $(instance.element).prop( 'disabled' ) ) {
@@ -162,12 +166,13 @@
                 placeholder.css( 'maxWidth', instance.options.maxPlaceholderWidth );
             }
 
-            // cacl default maxHeight
-            var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
-
             // override with user defined maxHeight
             if( instance.options.maxHeight ) {
-                maxHeight = instance.options.maxHeight;
+                var maxHeight = instance.options.maxHeight;
+            }
+            else {
+                // cacl default maxHeight
+                var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
             }
 
             // maxHeight cannot be less than options.minHeight
@@ -250,18 +255,21 @@
                 if( optionsWrap.closest('.ms-options-wrap').hasClass('ms-active') ) {
                     optionsWrap.css( 'maxHeight', '' );
 
-                    // cacl default maxHeight
-                    var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
-
                     // override with user defined maxHeight
                     if( instance.options.maxHeight ) {
-                        maxHeight = instance.options.maxHeight;
+                        var maxHeight = instance.options.maxHeight;
+                    }
+                    else {
+                        // cacl default maxHeight
+                        var maxHeight = ($(window).height() - optionsWrap.offset().top + $(window).scrollTop() - 20);
                     }
 
-                    // maxHeight cannot be less than options.minHeight
-                    maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
+                    if( maxHeight ) {
+                        // maxHeight cannot be less than options.minHeight
+                        maxHeight = maxHeight < instance.options.minHeight ? instance.options.minHeight : maxHeight;
 
-                    optionsWrap.css( 'maxHeight', maxHeight );
+                        optionsWrap.css( 'maxHeight', maxHeight );
+                    }
                 }
                 else if( typeof instance.options.onControlClose == 'function' ) {
                     instance.options.onControlClose( instance.element );
@@ -496,6 +504,7 @@
                 }
             }
 
+            var containers = [];
             for( var key in options ) {
                 // Prevent prototype methods injected into options from being iterated over.
                 if( !options.hasOwnProperty( key ) ) {
@@ -506,8 +515,33 @@
                 var container       = $('<li/>');
                 var appendContainer = true;
 
+                // OPTION
+                if( thisOption.hasOwnProperty('value') ) {
+                    if( instance.options.showCheckbox && instance.options.checkboxAutoFit ) {
+                        container.addClass('ms-reflow');
+                    }
+
+                    // add option to ms dropdown
+                    instance._addOption( container, thisOption );
+
+                    if( updateSelect ) {
+                        var selOption = $('<option value="'+ thisOption.value +'">'+ thisOption.name +'</option>');
+
+                        // add custom user attributes
+                        if( thisOption.hasOwnProperty('attributes') && Object.keys( thisOption.attributes ).length ) {
+                            selOption.attr( thisOption.attributes );
+                        }
+
+                        // mark option as selected
+                        if( thisOption.checked ) {
+                            selOption.prop( 'selected', true );
+                        }
+
+                        select.append( selOption );
+                    }
+                }
                 // OPTGROUP
-                if( thisOption.hasOwnProperty('options') ) {
+                else if( thisOption.hasOwnProperty('options') ) {
                     var optGroup = $('<optgroup label="'+ thisOption.label +'"></optgroup>');
 
                     optionsList.find('> li.optgroup > span.label').each(function(){
@@ -551,7 +585,10 @@
                         }
 
                         var thisGOption = thisOption.options[ gKey ];
-                        var gContainer  = $('<li/>').addClass('ms-reflow');
+                        var gContainer  = $('<li/>');
+                        if( instance.options.showCheckbox && instance.options.checkboxAutoFit ) {
+                            gContainer.addClass('ms-reflow');
+                        }
 
                         // no clue what this is we hit (skip)
                         if( !thisGOption.hasOwnProperty('value') ) {
@@ -580,51 +617,31 @@
                         }
                     }
                 }
-                // OPTION
-                else if( thisOption.hasOwnProperty('value') ) {
-                    container.addClass('ms-reflow');
-
-                    // add option to ms dropdown
-                    instance._addOption( container, thisOption );
-
-                    if( updateSelect ) {
-                        var selOption = $('<option value="'+ thisOption.value +'">'+ thisOption.name +'</option>');
-
-                        // add custom user attributes
-                        if( thisOption.hasOwnProperty('attributes') && Object.keys( thisOption.attributes ).length ) {
-                            selOption.attr( thisOption.attributes );
-                        }
-
-                        // mark option as selected
-                        if( thisOption.checked ) {
-                            selOption.prop( 'selected', true );
-                        }
-
-                        select.append( selOption );
-                    }
-                }
                 else {
                     // no clue what this is we hit (skip)
                     continue;
                 }
 
                 if( appendContainer ) {
-                    optionsList.append( container );
+                    containers.push( container );
                 }
             }
+            optionsList.append( containers );
 
             // pad out label for room for the checkbox
-            var chkbx = optionsList.find('.ms-reflow input[type="checkbox"]').eq(0);
-            if( chkbx.length && chkbx.css('display').match(/block$/) ) {
-                var checkboxWidth = chkbx.outerWidth();
-                    checkboxWidth = checkboxWidth ? checkboxWidth : 15;
+            if( instance.options.checkboxAutoFit && instance.options.showCheckbox && !optionsWrap.hasClass('hide-checkbox') ) {
+                var chkbx = optionsList.find('.ms-reflow:eq(0) input[type="checkbox"]');
+                if( chkbx.length ) {
+                    var checkboxWidth = chkbx.outerWidth();
+                        checkboxWidth = checkboxWidth ? checkboxWidth : 15;
 
-                optionsList.find('.ms-reflow label').css(
-                    'padding-left',
-                    (parseInt( chkbx.closest('label').css('padding-left') ) * 2) + checkboxWidth
-                );
+                    optionsList.find('.ms-reflow label').css(
+                        'padding-left',
+                        (parseInt( chkbx.closest('label').css('padding-left') ) * 2) + checkboxWidth
+                    );
 
-                optionsList.find('.ms-reflow').removeClass('ms-reflow');
+                    optionsList.find('.ms-reflow').removeClass('ms-reflow');
+                }
             }
 
             // update placeholder text
@@ -807,13 +824,13 @@
                 optionsWrap.closest('.ms-options-wrap').removeClass('ms-has-selections');
             }
 
-            // if copy is larger than button width use "# selected"
-            if( (placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length) ) {
-                placeholderTxt.text( select.val().length + instance.options.texts.selectedOptions );
-            }
             // replace placeholder text
-            else if( !selOpts.length ) {
+            if( !selOpts.length ) {
                 placeholderTxt.text( instance.options.texts.placeholder );
+            }
+            // if copy is larger than button width use "# selected"
+            else if( (placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length) ) {
+                placeholderTxt.text( select.val().length + instance.options.texts.selectedOptions );
             }
         },
 
@@ -866,6 +883,10 @@
 
     // ENABLE JQUERY PLUGIN FUNCTION
     $.fn.multiselect = function( options ){
+        if( !this.length ) {
+            return;
+        }
+
         var args = arguments;
         var ret;
 

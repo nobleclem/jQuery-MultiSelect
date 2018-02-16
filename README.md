@@ -72,6 +72,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | maxPlaceholderWidth | number   | null           | maximum width of placeholder button |
 | maxPlaceholderOpts  | number   | 10             | maximum number of placeholder options to show until "# selected" shown instead |
 | showCheckbox        | bool     | true           | display the option checkbox    |
+| checkboxAutoFit     | bool     | false          | auto calc space requirements for checkbox instead of css padding on label |
 | onLoad              | function |                | fires at end of initial loading, hides native select list |
 | onOptionClick       | function |                | fires after on option is clicked |
 | onControlClose      | function |                | fires when the options list is closed |

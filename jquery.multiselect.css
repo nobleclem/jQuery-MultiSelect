@@ -111,9 +111,13 @@
     position: relative;
     display: inline-block;
     width: 100%;
-    padding: 4px;
+    padding: 4px 4px 4px 20px;
     margin: 1px 0;
     border: 1px dotted transparent;
+}
+.ms-options-wrap > .ms-options.checkbox-autofit > ul label,
+.ms-options-wrap > .ms-options.hide-checkbox > ul label {
+    padding: 4px;
 }
 
 .ms-options-wrap > .ms-options > ul label.focused,
