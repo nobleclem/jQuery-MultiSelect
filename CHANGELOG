@@ -1,3 +1,7 @@
+2.4.11 (2018-03-06)
+===================
+pass selected count to the onSelectAll callback
+
 2.4.10 (2018-02-16)
 ===================
 performance optimizations to assist with #124

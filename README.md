@@ -176,9 +176,11 @@ element: select list element object
 
 Fires when (un)select all is clicked
 
-`onSelectAll( element )`
+`onSelectAll( element, selected )`
 
 element: select list element object
+
+selected: the total number of options selected
 
 
 **onSearch**

@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.10
+ * @Version: 2.4.11
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -66,10 +66,10 @@
         optionAttributes   : [],    // attributes to copy to the checkbox from the option element
 
         // Callbacks
-        onLoad        : function( element ){},         // fires at end of list initialization
-        onOptionClick : function( element, option ){}, // fires when an option is clicked
-        onControlClose: function( element ){},         // fires when the options list is closed
-        onSelectAll   : function( element ){},         // fires when (un)select all is clicked
+        onLoad        : function( element ){},           // fires at end of list initialization
+        onOptionClick : function( element, option ){},   // fires when an option is clicked
+        onControlClose: function( element ){},           // fires when the options list is closed
+        onSelectAll   : function( element, selected ){}, // fires when (un)select all is clicked
 
         // @NOTE: these are for future development
         minSelect: false, // minimum number of items that can be selected
@@ -387,7 +387,7 @@
 
                 // USER CALLBACK
                 if( typeof instance.options.onSelectAll == 'function' ) {
-                    instance.options.onSelectAll( instance.element );
+                    instance.options.onSelectAll( instance.element, vals.length );
                 }
 
                 instance._updateSelectAllText();
