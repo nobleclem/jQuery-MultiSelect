@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.11
+ * @Version: 2.4.12
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -447,9 +447,6 @@
             });
             instance.loadOptions( options, true, false );
 
-            // update un/select all logic
-            instance._updateSelectAllText( false );
-
             // BIND SELECT ACTION
             optionsWrap.on( 'click', 'input[type="checkbox"]', function(){
                 $(this).closest( 'li' ).toggleClass( 'selected' );
@@ -704,6 +701,9 @@
                     });
                 }
             }
+
+            // update un/select all logic
+            instance._updateSelectAllText();
         },
 
         /* UPDATE MULTISELECT CONFIG OPTIONS */
@@ -753,13 +753,9 @@
 
         /** PRIVATE FUNCTIONS **/
         // update the un/select all texts based on selected options and visibility
-        _updateSelectAllText: function( visibleOnly ){
+        _updateSelectAllText: function(){
             if( !this.updateSelectAll ) {
                 return;
-            }
-
-            if( typeof visibleOnly !== 'boolean' ) {
-                visibleOnly = true;
             }
 
             var instance = this;
