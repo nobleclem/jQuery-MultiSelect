@@ -1,3 +1,7 @@
+2.4.13 (2018-07-06)
+===================
+code tweak/optimization for cases where working with the <select> element
+
 2.4.12 (2018-05-22)
 ===================
 resolves #132 (un/select all) logic with dynamically loaded options

@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.12
+ * @Version: 2.4.13
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -489,9 +489,9 @@
             updateSelect = (typeof updateSelect == 'boolean') ? updateSelect : true;
 
             var instance    = this;
-            var optionsList = $(instance.element).next('.ms-options-wrap').find('> .ms-options > ul');
-            var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
-            var select      = optionsWrap.parent().prev();
+            var select      = $(instance.element);
+            var optionsList = select.next('.ms-options-wrap').find('> .ms-options > ul');
+            var optionsWrap = select.next('.ms-options-wrap').find('> .ms-options');
 
             if( overwrite ) {
                 optionsList.find('> li').remove();
@@ -784,11 +784,11 @@
             }
 
             var instance       = this;
-            var placeholder    = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
-            var placeholderTxt = placeholder.find('span');
-            var optionsWrap    = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
-            var select         = optionsWrap.parent().prev();
+            var select         = $(instance.element);
             var selectVals     = select.val() ? select.val() : [];
+            var placeholder    = select.next('.ms-options-wrap').find('> button:first-child');
+            var placeholderTxt = placeholder.find('span');
+            var optionsWrap    = select.next('.ms-options-wrap').find('> .ms-options');
 
             // if there are disabled options get those values as well
             if( select.find('option:selected:disabled').length ) {
