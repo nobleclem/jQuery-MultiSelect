@@ -826,7 +826,7 @@
             }
             // if copy is larger than button width use "# selected"
             else if( (placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length) ) {
-                placeholderTxt.text( select.val().length + instance.options.texts.selectedOptions );
+                placeholderTxt.text( selectVals.length + instance.options.texts.selectedOptions );
             }
         },
 
