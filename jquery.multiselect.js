@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.13
+ * @Version: 2.4.14
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -801,6 +801,11 @@
             // get selected options
             var selOpts = [];
             for( var key in selectVals ) {
+                // Prevent prototype methods injected into options from being iterated over.
+                if( !selectVals.hasOwnProperty( key ) ) {
+                    continue;
+                }
+
                 selOpts.push(
                     $.trim( select.find('option[value="'+ selectVals[ key ] +'"]').text() )
                 );

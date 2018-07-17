@@ -1,3 +1,7 @@
+2.4.14 (2018-07-17)
+===================
+Resolves PR #134
+
 2.4.13 (2018-07-06)
 ===================
 code tweak/optimization for cases where working with the <select> element
