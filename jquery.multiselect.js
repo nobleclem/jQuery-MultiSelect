@@ -801,6 +801,11 @@
             // get selected options
             var selOpts = [];
             for( var key in selectVals ) {
+                if ( selectVals.hasOwnProperty(key) ) {
+                    selOpts.push(
+                        $.trim( select.find('option[value="'+ selectVals[ key ] +'"]').text() )
+                    );
+                }
                 selOpts.push(
                     $.trim( select.find('option[value="'+ selectVals[ key ] +'"]').text() )
                 );
