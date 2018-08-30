@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.14
+ * @Version: 2.4.15
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -70,13 +70,10 @@
         onOptionClick : function( element, option ){},   // fires when an option is clicked
         onControlClose: function( element ){},           // fires when the options list is closed
         onSelectAll   : function( element, selected ){}, // fires when (un)select all is clicked
-
-        // @NOTE: these are for future development
-        minSelect: false, // minimum number of items that can be selected
-        maxSelect: false, // maximum number of items that can be selected
     };
 
-    var msCounter = 1;
+    var msCounter    = 1; // counter for each select list
+    var msOptCounter = 1; // counter for each option on page
 
     // FOR LEGACY BROWSERS (talking to you IE8)
     if( typeof Array.prototype.map !== 'function' ) {
@@ -100,6 +97,9 @@
         this.options           = $.extend( true, {}, defaults, options );
         this.updateSelectAll   = true;
         this.updatePlaceholder = true;
+        this.listNumber        = msCounter;
+
+        msCounter = msCounter + 1; // increment counter
 
         /* Make sure its a multiselect list */
         if( !$(this.element).attr('multiple') ) {
@@ -139,13 +139,13 @@
             }
 
             // sanity check so we don't double load on a select element
-            $(instance.element).addClass('jqmsLoaded').data( 'plugin_multiselect-instance', instance );
+            $(instance.element).addClass('jqmsLoaded ms-list-'+ instance.listNumber ).data( 'plugin_multiselect-instance', instance );
 
             // add option container
-            $(instance.element).after('<div class="ms-options-wrap"><button type="button"><span>None Selected</span></button><div class="ms-options"><ul></ul></div></div>');
+            $(instance.element).after('<div id="ms-list-'+ instance.listNumber +'" class="ms-options-wrap"><button type="button"><span>None Selected</span></button><div class="ms-options"><ul></ul></div></div>');
 
-            var placeholder = $(instance.element).next('.ms-options-wrap').find('> button:first-child');
-            var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
+            var placeholder = $(instance.element).siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> button:first-child');
+            var optionsWrap = $(instance.element).siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> .ms-options');
             var optionsList = optionsWrap.find('> ul');
 
             // don't show checkbox (add class for css to hide checkboxes)
@@ -186,7 +186,7 @@
 
             // isolate options scroll
             // @source: https://github.com/nobleclem/jQuery-IsolatedScroll
-            optionsWrap.bind( 'touchmove mousewheel DOMMouseScroll', function ( e ) {
+            optionsWrap.on( 'touchmove mousewheel DOMMouseScroll', function ( e ) {
                 if( ($(this).outerHeight() < $(this)[0].scrollHeight) ) {
                     var e0 = e.originalEvent,
                         delta = e0.wheelDelta || -e0.detail;
@@ -204,7 +204,9 @@
                     $('.ms-options-wrap.ms-active > .ms-options').each(function(){
                         $(this).closest('.ms-options-wrap').removeClass('ms-active');
 
-                        var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
+                        var listID = $(this).closest('.ms-options-wrap').attr('id');
+
+                        var thisInst = $(this).parent().siblings('.'+ listID +'.jqmsLoaded').data('plugin_multiselect-instance');
 
                         // USER CALLBACK
                         if( typeof thisInst.options.onControlClose == 'function' ) {
@@ -213,14 +215,14 @@
                     });
                 }
             // hide open option lists if escape key pressed
-            }).bind('keydown', function( event ){
+            }).on('keydown', function( event ){
                 if( (event.keyCode || event.which) == 27 ) { // esc key
                     $(this).trigger('click.ms-hideopts');
                 }
             });
 
             // handle pressing enter|space while tabbing through
-            placeholder.bind('keydown', function( event ){
+            placeholder.on('keydown', function( event ){
                 var code = (event.keyCode || event.which);
                 if( (code == 13) || (code == 32) ) { // enter OR space
                     placeholder.trigger( 'mousedown' );
@@ -228,18 +230,18 @@
             });
 
             // disable button action
-            placeholder.bind('mousedown',function( event ){
+            placeholder.on( 'mousedown', function( event ){
                 // ignore if its not a left click
                 if( event.which && (event.which != 1) ) {
                     return true;
                 }
 
                 // hide other menus before showing this one
-                $('.ms-options-wrap.ms-active > .ms-options').each(function(){
-                    if( $(this).parent().prev()[0] != optionsWrap.parent().prev()[0] ) {
-                        $(this).closest('.ms-options-wrap').removeClass('ms-active');
+                $('.ms-options-wrap.ms-active').each(function(){
+                    if( $(this).siblings( '.'+ $(this).attr('id') +'.jqmsLoaded')[0] != optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded')[0] ) {
+                        $(this).removeClass('ms-active');
 
-                        var thisInst = $(this).parent().prev('.jqmsLoaded').data('plugin_multiselect-instance');
+                        var thisInst = $(this).siblings( '.'+ $(this).attr('id') +'.jqmsLoaded').data('plugin_multiselect-instance');
 
                         // USER CALLBACK
                         if( typeof thisInst.options.onControlClose == 'function' ) {
@@ -346,7 +348,7 @@
                 instance.updateSelectAll   = false;
                 instance.updatePlaceholder = false;
 
-                var select = optionsWrap.parent().prev();
+                var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded');
 
                 if( $(this).hasClass('global') ) {
                     // check if any options are not selected if so then select them
@@ -451,7 +453,7 @@
             optionsWrap.on( 'click', 'input[type="checkbox"]', function(){
                 $(this).closest( 'li' ).toggleClass( 'selected' );
 
-                var select = optionsWrap.parent().prev();
+                var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded');
 
                 // toggle clicked option
                 select.find('option[value="'+ $(this).val() +'"]').prop(
@@ -490,8 +492,8 @@
 
             var instance    = this;
             var select      = $(instance.element);
-            var optionsList = select.next('.ms-options-wrap').find('> .ms-options > ul');
-            var optionsWrap = select.next('.ms-options-wrap').find('> .ms-options');
+            var optionsList = select.siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> .ms-options > ul');
+            var optionsWrap = select.siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> .ms-options');
 
             if( overwrite ) {
                 optionsList.find('> li').remove();
@@ -714,7 +716,7 @@
 
         /* RESET THE DOM */
         unload: function() {
-            $(this.element).next('.ms-options-wrap').remove();
+            $(this.element).siblings('#ms-list-'+ this.listNumber +'.ms-options-wrap').remove();
             $(this.element).show(function(){
                 $(this).css('display','').removeClass('jqmsLoaded');
             });
@@ -723,7 +725,7 @@
         /* RELOAD JQ MULTISELECT LIST */
         reload: function() {
             // remove existing options
-            $(this.element).next('.ms-options-wrap').remove();
+            $(this.element).siblings('#ms-list-'+ this.listNumber +'.ms-options-wrap').remove();
             $(this.element).removeClass('jqmsLoaded');
 
             // load element
@@ -747,7 +749,7 @@
         disable: function( status ) {
             status = (typeof status === 'boolean') ? status : true;
             $(this.element).prop( 'disabled', status );
-            $(this.element).next('.ms-options-wrap').find('button:first-child')
+            $(this.element).siblings('#ms-list-'+ this.listNumber +'.ms-options-wrap').find('button:first-child')
                 .prop( 'disabled', status );
         },
 
@@ -765,7 +767,7 @@
                 return;
             }
 
-            var optionsWrap = $(instance.element).next('.ms-options-wrap').find('> .ms-options');
+            var optionsWrap = $(instance.element).siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> .ms-options');
 
             // update un/select all text
             optionsWrap.find('.ms-selectall').each(function(){
@@ -786,9 +788,9 @@
             var instance       = this;
             var select         = $(instance.element);
             var selectVals     = select.val() ? select.val() : [];
-            var placeholder    = select.next('.ms-options-wrap').find('> button:first-child');
+            var placeholder    = select.siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> button:first-child');
             var placeholderTxt = placeholder.find('span');
-            var optionsWrap    = select.next('.ms-options-wrap').find('> .ms-options');
+            var optionsWrap    = select.siblings('#ms-list-'+ instance.listNumber +'.ms-options-wrap').find('> .ms-options');
 
             // if there are disabled options get those values as well
             if( select.find('option:selected:disabled').length ) {
@@ -839,14 +841,14 @@
         _addOption: function( container, option ) {
             var instance = this;
             var thisOption = $('<label/>', {
-                for : 'ms-opt-'+ msCounter,
+                for : 'ms-opt-'+ msOptCounter,
                 text: option.name
             });
 
             var thisCheckbox = $('<input>', {
                 type : 'checkbox',
                 title: option.name,
-                id   : 'ms-opt-'+ msCounter,
+                id   : 'ms-opt-'+ msOptCounter,
                 value: option.value
             });
 
@@ -872,7 +874,7 @@
 
             container.attr( 'data-search-term', $.trim( searchTerm ) ).prepend( thisOption );
 
-            msCounter = msCounter + 1;
+            msOptCounter = msOptCounter + 1;
         },
 
         // check ie version
