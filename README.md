@@ -10,7 +10,7 @@ I only provide limited support through the Github Issues area.  DO NOT ask for s
 This plugin is not meant to be a full featured multiselect plugin.  I envision this as a multiselect plugin that contains a base set of features that can be enhanced using callbacks by the developer.  Because of this I am hesitant on adding functionality but am open to adding callbacks where it makes sense.  But feel free to open an [issue](https://github.com/nobleclem/jQuery-MultiSelect/issues) and suggest a feature request if you feel that most people will benefit from it.
 
 ## Demo
-http://springstubbe.us/projects/demos/jquery-multiselect/
+http://springstubbe.us/projects/jquery-multiselect/
 
 ## Usage
 ```
