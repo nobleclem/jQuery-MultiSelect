@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.15
+ * @Version: 2.4.16
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -456,7 +456,7 @@
                 var select = optionsWrap.parent().siblings('.ms-list-'+ instance.listNumber +'.jqmsLoaded');
 
                 // toggle clicked option
-                select.find('option[value="'+ $(this).val() +'"]').prop(
+                select.find('option[value="'+ instance._escapeSelector( $(this).val() ) +'"]').prop(
                     'selected', $(this).is(':checked')
                 ).closest('select').trigger('change');
 
@@ -809,7 +809,7 @@
                 }
 
                 selOpts.push(
-                    $.trim( select.find('option[value="'+ selectVals[ key ] +'"]').text() )
+                    $.trim( select.find('option[value="'+ instance._escapeSelector( selectVals[ key ] ) +'"]').text() )
                 );
 
                 if( selOpts.length >= instance.options.maxPlaceholderOpts ) {
@@ -881,6 +881,16 @@
         _ieVersion: function() {
             var myNav = navigator.userAgent.toLowerCase();
             return (myNav.indexOf('msie') != -1) ? parseInt(myNav.split('msie')[1]) : false;
+        },
+
+        // escape selector
+        _escapeSelector: function( string ) {
+            if( typeof $.escapeSelector == 'function' ) {
+                return $.escapeSelector( string );
+            }
+            else {
+                return string.replace(/[!"#$%&'()*+,.\/:;<=>?@[\\\]^`{|}~]/g, "\\$&");
+            }
         }
     };
 
