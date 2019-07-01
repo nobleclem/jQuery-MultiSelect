@@ -81,6 +81,9 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | onControlClose      | function |                | fires when the options list is closed |
 | onSelectAll         | function |                | fires when (un)select all is clicked |
 | optionAttributes    | array    |                | array of attribute keys to copy to the checkbox input |
+| optionPostion       | object   | null           | use jQuery UI Position to locate the list of options, relative to the button. Useful with maxWidth. {} will use defaults, or e.g. { at : 'left bottom'}. see jQuery UL Position for options |
+
+
 
 
 ### Methods

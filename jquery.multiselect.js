@@ -70,6 +70,7 @@
         onOptionClick : function( element, option ){},   // fires when an option is clicked
         onControlClose: function( element ){},           // fires when the options list is closed
         onSelectAll   : function( element, selected ){}, // fires when (un)select all is clicked
+		optionPostion : null,
     };
 
     var msCounter    = 1; // counter for each select list
@@ -276,6 +277,17 @@
                 else if( typeof instance.options.onControlClose == 'function' ) {
                     instance.options.onControlClose( instance.element );
                 }
+
+				if( instance.options.optionPostion ) {
+					var pos = $.extend( {
+						my: 'left top',
+						at: 'left bottom',
+						of: optionsWrap.parent(),
+						collision: 'flipfit'}, instance.options.optionPostion );
+					jQuery( optionsWrap )
+						.position(pos);
+            }
+
             }).click(function( event ){ event.preventDefault(); });
 
             // add placeholder copy
