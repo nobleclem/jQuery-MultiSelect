@@ -80,6 +80,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | onOptionClick       | function |                | fires after on option is clicked |
 | onControlClose      | function |                | fires when the options list is closed |
 | onSelectAll         | function |                | fires when (un)select all is clicked |
+| onPlaceholder       | function |                | fires when the placeholder txt is updated |
 | optionAttributes    | array    |                | array of attribute keys to copy to the checkbox input |
 
 
@@ -184,6 +185,18 @@ Fires when (un)select all is clicked
 element: select list element object
 
 selected: the total number of options selected
+
+**onPlaceholder**
+
+Fires when the placeholder txt is updated (only fires if there are selected options)
+
+`onPlaceholder( element, placeholder, selectedOpts )`
+
+element: select list element object
+
+placeholder: placeholder element object
+
+selectedOpts: selected options
 
 
 **onSearch**
