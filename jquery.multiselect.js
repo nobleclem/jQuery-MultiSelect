@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.16
+ * @Version: 2.4.17
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -70,6 +70,7 @@
         onOptionClick : function( element, option ){},   // fires when an option is clicked
         onControlClose: function( element ){},           // fires when the options list is closed
         onSelectAll   : function( element, selected ){}, // fires when (un)select all is clicked
+        onPlaceholder : function( element, placeholder, selectedOpts ){}, // fires when the placeholder txt is updated
     };
 
     var msCounter    = 1; // counter for each select list
@@ -822,6 +823,11 @@
 
             if( selOpts.length ) {
                 optionsWrap.closest('.ms-options-wrap').addClass('ms-has-selections');
+
+                // USER CALLBACK
+                if( typeof instance.options.onPlaceholder == 'function' ) {
+                    instance.options.onPlaceholder( instance.element, placeholderTxt, selOpts );
+                }
             }
             else {
                 optionsWrap.closest('.ms-options-wrap').removeClass('ms-has-selections');
