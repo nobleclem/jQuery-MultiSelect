@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.17
+ * @Version: 2.4.18
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -525,7 +525,10 @@
                     instance._addOption( container, thisOption );
 
                     if( updateSelect ) {
-                        var selOption = $('<option value="'+ thisOption.value +'">'+ thisOption.name +'</option>');
+                        var selOption = $('<option/>', {
+                            value: thisOption.value,
+                            text : thisOption.name
+                        });
 
                         // add custom user attributes
                         if( thisOption.hasOwnProperty('attributes') && Object.keys( thisOption.attributes ).length ) {
@@ -542,7 +545,9 @@
                 }
                 // OPTGROUP
                 else if( thisOption.hasOwnProperty('options') ) {
-                    var optGroup = $('<optgroup label="'+ thisOption.label +'"></optgroup>');
+                    var optGroup = $('<optgroup/>', {
+                        label: thisOption.label
+                    });
 
                     optionsList.find('> li.optgroup > span.label').each(function(){
                         if( $(this).text() == thisOption.label ) {
@@ -601,7 +606,10 @@
 
                         // add option to optgroup in select element
                         if( updateSelect ) {
-                            var selOption = $('<option value="'+ thisGOption.value +'">'+ thisGOption.name +'</option>');
+                            var selOption = $('<option/>', {
+                                value: thisGOption.value,
+                                text : thisGOption.name
+                            });
 
                             // add custom user attributes
                             if( thisGOption.hasOwnProperty('attributes') && Object.keys( thisGOption.attributes ).length ) {
@@ -846,14 +854,15 @@
         // Add option to the custom dom list
         _addOption: function( container, option ) {
             var instance = this;
+            var optionNameText = $('<div/>').html( option.name ).text();
+
             var thisOption = $('<label/>', {
-                for : 'ms-opt-'+ msOptCounter,
-                text: option.name
-            });
+                for : 'ms-opt-'+ msOptCounter
+            }).html( option.name );
 
             var thisCheckbox = $('<input>', {
                 type : 'checkbox',
-                title: option.name,
+                title: optionNameText,
                 id   : 'ms-opt-'+ msOptCounter,
                 value: option.value
             });
@@ -872,7 +881,7 @@
 
             var searchTerm = '';
             if( instance.options.searchOptions.searchText ) {
-                searchTerm += ' ' + option.name.toLowerCase();
+                searchTerm += ' ' + optionNameText.toLowerCase();
             }
             if( instance.options.searchOptions.searchValue ) {
                 searchTerm += ' ' + option.value.toLowerCase();
