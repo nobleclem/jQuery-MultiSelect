@@ -762,6 +762,66 @@
                 .prop( 'disabled', status );
         },
 
+        getValues: function () {
+            var instance = this;
+            var select = $(instance.element);
+            var optionsList = select.siblings('#ms-list-' + instance.listNumber + '.ms-options-wrap').find('> .ms-options > ul');
+            var vals = [];
+            optionsList.find('li.selected input[type="checkbox"]').each(function () {
+                vals.push($(this).val());
+            });
+            return vals;
+        },
+
+        select: function (val) {
+            var instance = this;
+            var select = $(instance.element);
+            var optionsList = select.siblings('#ms-list-' + instance.listNumber + '.ms-options-wrap').find('> .ms-options > ul');
+            if (typeof val == "string") {
+                var el = optionsList.children().find('input[value="' + val + '"]')
+                el.closest('li').addClass('selected');
+                el.prop('checked', true);
+            } else {
+                for (i in val) {
+                    var el = optionsList.children().find('input[value="' + val[i] + '"]')
+                    el.closest('li').addClass('selected');
+                    el.prop('checked', true);
+                }
+            }
+            var vals = [];
+            optionsList.find('li.selected input[type="checkbox"]').each(function () {
+                vals.push($(this).val());
+            });
+            select.val(vals).trigger('change');
+            instance._updatePlaceholderText();
+            instance._updateSelectAllText();
+        },
+
+        deselect: function (val) {
+            var instance = this;
+            var select = $(instance.element);
+            var optionsList = select.siblings('#ms-list-' + instance.listNumber + '.ms-options-wrap').find('> .ms-options > ul');
+            if (typeof val == "string") {
+                var el = optionsList.children().find('input[value="' + val + '"]')
+                el.closest('li').removeClass('selected');
+                el.prop('checked', false);
+            } else {
+                for (i in val) {
+                    var el = optionsList.children().find('input[value="' + val[i] + '"]')
+                    el.closest('li').removeClass('selected');
+                    el.prop('checked', false);
+                }
+            }
+            var vals = [];
+            optionsList.find('li.selected input[type="checkbox"]').each(function () {
+                vals.push($(this).val());
+            });
+            select.val(vals).trigger('change');
+            instance._updatePlaceholderText();
+            instance._updateSelectAllText();
+        },
+
+
         /** PRIVATE FUNCTIONS **/
         // update the un/select all texts based on selected options and visibility
         _updateSelectAllText: function(){
