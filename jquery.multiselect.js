@@ -45,12 +45,13 @@
 
         // plugin texts
         texts: {
-            placeholder    : 'Select options', // text to use in dummy input
-            search         : 'Search',         // search input placeholder text
-            selectedOptions: ' selected',      // selected suffix text
-            selectAll      : 'Select all',     // select all text
-            unselectAll    : 'Unselect all',   // unselect all text
-            noneSelected   : 'None Selected'   // None selected text
+            placeholder          : 'Select options',    // text to use in dummy input
+            search               : 'Search',            // search input placeholder text
+            searchNoResult       : 'No results',        // search results not found text
+            selectedOptions      : ' selected',         // selected suffix text
+            selectAll            : 'Select all',        // select all text
+            unselectAll          : 'Unselect all',      // unselect all text
+            noneSelected         : 'None Selected'      // None selected text
         },
 
         // general options
@@ -287,9 +288,15 @@
             // add search box
             if( instance.options.search ) {
                 optionsList.before('<div class="ms-search"><input type="text" value="" placeholder="'+ instance.options.texts.search +'" /></div>');
+                optionsList.after('<div class="no-result-message">' + instance.options.texts.searchNoResult + '</div>');
 
                 var search = optionsWrap.find('.ms-search input');
+                var searchEmptyView = optionsWrap.find('.no-result-message');
+
                 search.on('keyup', function(){
+                    // hide the not found message on search change
+                    searchEmptyView.hide();
+
                     // ignore keystrokes that don't make a difference
                     if( $(this).data('lastsearch') == $(this).val() ) {
                         return true;
@@ -331,6 +338,11 @@
                                 }
                             });
                         }
+
+                        //  show not found message
+                        var hiddenCount = optionsList.find('li.ms-hidden').length;
+                        var listCount = optionsList.find('li').length;
+                        searchEmptyView.toggle(hiddenCount == listCount);
 
                         instance._updateSelectAllText();
                     }, instance.options.searchOptions.delay ));

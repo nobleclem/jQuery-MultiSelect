@@ -69,6 +69,11 @@
     outline: none;
 }
 
+.ms-options-wrap > .ms-options > .no-result-message {
+    padding: 4px 5px;
+    display: none;
+}
+
 .ms-options-wrap > .ms-options .ms-selectall {
     display: inline-block;
     font-size: .9em;
