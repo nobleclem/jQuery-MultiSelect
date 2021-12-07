@@ -1,3 +1,7 @@
+.ms-options-wrap {
+    position: relative;
+}
+
 .ms-options-wrap,
 .ms-options-wrap * {
     box-sizing: border-box;

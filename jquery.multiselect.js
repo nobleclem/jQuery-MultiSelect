@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.19
+ * @Version: 2.4.20
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -488,6 +488,7 @@
 
         /* LOAD SELECT OPTIONS */
         loadOptions: function( options, overwrite, updateSelect ) {
+            console.log( options );
             overwrite    = (typeof overwrite == 'boolean') ? overwrite : true;
             updateSelect = (typeof updateSelect == 'boolean') ? updateSelect : true;
 
