@@ -63,6 +63,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | texts               | object   |                |                                |
 | - placeholder       | string   | Select options | default text for dropdown      |
 | - search            | string   | Search         | search input placeholder text  |
+| - searchNoResult    | string   | No results     | search results not found text  |
 | - selectedOptions   | string   |  selected      | selected suffix text           |
 | - selectAll         | string   | Select all     | select all text                |
 | - unselectAll       | string   | Unselect all   | unselect all text              |
