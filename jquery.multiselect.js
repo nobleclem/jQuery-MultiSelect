@@ -70,6 +70,7 @@
         // Callbacks
         onLoad        : function( element ){},           // fires at end of list initialization
         onOptionClick : function( element, option ){},   // fires when an option is clicked
+        onControlOpen : function( element ){},           // fires when the options list is opened
         onControlClose: function( element ){},           // fires when the options list is closed
         onSelectAll   : function( element, selected ){}, // fires when (un)select all is clicked
         onPlaceholder : function( element, placeholder, selectedOpts ){}, // fires when the placeholder txt is updated
@@ -258,6 +259,11 @@
 
                 // recalculate height
                 if( optionsWrap.closest('.ms-options-wrap').hasClass('ms-active') ) {
+                    // USER CALLBACK
+                    if( typeof instance.options.onControlOpen == 'function' ) {
+                        instance.options.onControlOpen( instance.element );
+                    }
+
                     optionsWrap.css( 'maxHeight', '' );
 
                     // override with user defined maxHeight

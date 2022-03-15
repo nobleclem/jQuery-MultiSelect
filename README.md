@@ -79,6 +79,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | checkboxAutoFit     | bool     | false          | auto calc space requirements for checkbox instead of css padding on label |
 | onLoad              | function |                | fires at end of initial loading, hides native select list |
 | onOptionClick       | function |                | fires after on option is clicked |
+| onControlOpen       | function |                | fires when the options list is open |
 | onControlClose      | function |                | fires when the options list is closed |
 | onSelectAll         | function |                | fires when (un)select all is clicked |
 | onPlaceholder       | function |                | fires when the placeholder txt is updated |
@@ -166,6 +167,15 @@ element: select list element object
 element: select list element object
 
 option:  option element object
+
+
+**onControlOpen**
+
+Fires when the options list is opened
+
+`onControlOpen( element )`
+
+element: select list element object
 
 
 **onControlClose**
