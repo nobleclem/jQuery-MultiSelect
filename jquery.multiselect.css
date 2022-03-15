@@ -22,11 +22,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.ms-options-wrap > button > span {
-    display: inline-block;
 }
 
 .ms-options-wrap > button[disabled] {
