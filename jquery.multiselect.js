@@ -55,16 +55,17 @@
         },
 
         // general options
-        selectAll          : false, // add select all option
-        selectGroup        : false, // select entire optgroup
-        minHeight          : 200,   // minimum height of option overlay
-        maxHeight          : null,  // maximum height of option overlay
-        maxWidth           : null,  // maximum width of option overlay (or selector)
-        maxPlaceholderWidth: null,  // maximum width of placeholder button
-        maxPlaceholderOpts : 10,    // maximum number of placeholder options to show until "# selected" shown instead
-        showCheckbox       : true,  // display the checkbox to the user
-        checkboxAutoFit    : false,  // auto calc checkbox padding
-        optionAttributes   : [],    // attributes to copy to the checkbox from the option element
+        selectAll              : false, // add select all option
+        selectGroup            : false, // select entire optgroup
+        minHeight              : 200,   // minimum height of option overlay
+        maxHeight              : null,  // maximum height of option overlay
+        maxWidth               : null,  // maximum width of option overlay (or selector)
+        maxPlaceholderWidth    : null,  // maximum width of placeholder button
+        maxPlaceholderOpts     : 10,    // maximum number of placeholder options to show until "# selected" shown instead
+        showCheckbox           : true,  // display the checkbox to the user
+        checkboxAutoFit        : false,  // auto calc checkbox padding
+        optionAttributes       : [],    // attributes to copy to the checkbox from the option element
+        replacePlaceholderText : true, // replace text of placeholder if button is too small
 
         // Callbacks
         onLoad        : function( element ){},           // fires at end of list initialization
@@ -858,7 +859,7 @@
                 placeholderTxt.text( instance.options.texts.placeholder );
             }
             // if copy is larger than button width use "# selected"
-            else if( (placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length) ) {
+            else if( instance.options.replacePlaceholderText && ((placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length)) ) {
                 placeholderTxt.text( selectVals.length + instance.options.texts.selectedOptions );
             }
         },

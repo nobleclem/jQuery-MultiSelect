@@ -20,6 +20,9 @@
     color: #aaa;
     outline-offset: -2px;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .ms-options-wrap > button > span {
