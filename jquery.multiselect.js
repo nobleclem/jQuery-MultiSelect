@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.20
+ * @Version: 2.4.21
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -45,13 +45,13 @@
 
         // plugin texts
         texts: {
-            placeholder          : 'Select options',    // text to use in dummy input
-            search               : 'Search',            // search input placeholder text
-            searchNoResult       : 'No results',        // search results not found text
-            selectedOptions      : ' selected',         // selected suffix text
-            selectAll            : 'Select all',        // select all text
-            unselectAll          : 'Unselect all',      // unselect all text
-            noneSelected         : 'None Selected'      // None selected text
+            placeholder    : 'Select options', // text to use in dummy input
+            search         : 'Search',         // search input placeholder text
+            searchNoResult : 'No results',     // search results not found text
+            selectedOptions: ' selected',      // selected suffix text
+            selectAll      : 'Select all',     // select all text
+            unselectAll    : 'Unselect all',   // unselect all text
+            noneSelected   : 'None Selected'   // None selected text
         },
 
         // general options
@@ -291,12 +291,8 @@
                 optionsList.after('<div class="no-result-message">' + instance.options.texts.searchNoResult + '</div>');
 
                 var search = optionsWrap.find('.ms-search input');
-                var searchEmptyView = optionsWrap.find('.no-result-message');
 
                 search.on('keyup', function(){
-                    // hide the not found message on search change
-                    searchEmptyView.hide();
-
                     // ignore keystrokes that don't make a difference
                     if( $(this).data('lastsearch') == $(this).val() ) {
                         return true;
@@ -338,11 +334,6 @@
                                 }
                             });
                         }
-
-                        //  show not found message
-                        var hiddenCount = optionsList.find('li.ms-hidden').length;
-                        var listCount = optionsList.find('li').length;
-                        searchEmptyView.toggle(hiddenCount == listCount);
 
                         instance._updateSelectAllText();
                     }, instance.options.searchOptions.delay ));
@@ -799,6 +790,14 @@
                     unselected.length ? instance.options.texts.selectAll : instance.options.texts.unselectAll
                 );
             });
+
+            var shownOptionsCount = optionsWrap.find('> ul li:not(.optgroup,.ms-hidden)').length;
+
+            // show/hide no-results message
+            optionsWrap.find('.no-result-message').toggle( shownOptionsCount ? false : true );
+
+            // show/hide (un)select all element as necessary
+            optionsWrap.find('.ms-selectall.global').toggle( shownOptionsCount ? true : false );
         },
 
         // update selected placeholder text
