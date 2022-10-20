@@ -877,7 +877,7 @@
 
             var thisOption = $('<label/>', {
                 for : 'ms-opt-'+ msOptCounter
-            }).html( option.name );
+            }).text( option.name );
 
             var thisCheckbox = $('<input>', {
                 type : 'checkbox',
