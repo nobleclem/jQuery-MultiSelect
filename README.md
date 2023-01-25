@@ -1,6 +1,11 @@
 jQuery MultiSelect
 ==================
 
+[![GitHub release](https://img.shields.io/github/release/nobleclem/jQuery-MultiSelect.svg)](https://github.com/nobleclem/jQuery-MultiSelect/releases)
+[![npm](https://img.shields.io/npm/v/@nobleclem/jquery-multiselect)](https://www.npmjs.com/package/@nobleclem/jquery-multiselect)
+[![GitHub issues](https://img.shields.io/github/issues/nobleclem/jQuery-MultiSelect.svg)](https://github.com/nobleclem/jQuery-MultiSelect/issues)
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/nobleclem/jQuery-MultiSelect.svg)](https://github.com/nobleclem/jQuery-MultiSelect/pulls)
+
 Turn a multiselect list into a nice and easy to use list with checkboxes.  This plugin is simply an alternative interface for the native select list element.  When you check an option in the plugin the value is selected on the native list.  This allows the value to be submitted in a form as well as retreived through normal POST/GET and javascript methods.
 
 ## Support
