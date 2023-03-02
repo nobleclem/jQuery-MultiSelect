@@ -5,7 +5,7 @@
         "name": "Patrick Springstubbe",
         "url" : "http://springstubbe.us"
     },
-    "version": "2.4.21",
+    "version": "2.4.22",
     "main": "jquery.multiselect.js",
     "license": "MIT",
     "keywords": [

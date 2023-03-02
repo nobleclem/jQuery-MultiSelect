@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.21
+ * @Version: 2.4.22
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -877,7 +877,7 @@
 
             var thisOption = $('<label/>', {
                 for : 'ms-opt-'+ msOptCounter
-            }).html( option.name );
+            }).text( optionNameText );
 
             var thisCheckbox = $('<input>', {
                 type : 'checkbox',
