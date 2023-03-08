@@ -3,6 +3,7 @@ jQuery MultiSelect
 
 [![GitHub release](https://img.shields.io/github/release/nobleclem/jQuery-MultiSelect.svg)](https://github.com/nobleclem/jQuery-MultiSelect/releases)
 [![npm](https://img.shields.io/npm/v/@nobleclem/jquery-multiselect)](https://www.npmjs.com/package/@nobleclem/jquery-multiselect)
+[![jsDelivr](https://data.jsdelivr.com/v1/package/npm/@nobleclem/jquery-multiselect/badge)](https://www.jsdelivr.com/package/npm/@nobleclem/jquery-multiselect)
 [![GitHub issues](https://img.shields.io/github/issues/nobleclem/jQuery-MultiSelect.svg)](https://github.com/nobleclem/jQuery-MultiSelect/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/nobleclem/jQuery-MultiSelect.svg)](https://github.com/nobleclem/jQuery-MultiSelect/pulls)
 
