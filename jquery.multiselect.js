@@ -138,7 +138,7 @@
             var instance = this;
 
             // make sure this is a select list and not loaded
-            if( (instance.element.nodeName != 'SELECT') || $(instance.element).hasClass('jqmsLoaded') ) {
+            if( (instance.element.nodeName.toUpperCase() != 'SELECT') || $(instance.element).hasClass('jqmsLoaded') ) {
                 return true;
             }
 
@@ -410,7 +410,7 @@
             // add options to wrapper
             var options = [];
             $(instance.element).children().each(function(){
-                if( this.nodeName == 'OPTGROUP' ) {
+                if( this.nodeName.toUpperCase() == 'OPTGROUP' ) {
                     var groupOptions = [];
 
                     $(this).children('option').each(function(){
@@ -436,7 +436,7 @@
                         options: groupOptions
                     });
                 }
-                else if( this.nodeName == 'OPTION' ) {
+                else if( this.nodeName.toUpperCase() == 'OPTION' ) {
                     var thisOptionAtts = {};
                     for( var i = 0; i < instance.options.optionAttributes.length; i++ ) {
                         var thisOptAttr = instance.options.optionAttributes[ i ];
