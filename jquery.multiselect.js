@@ -867,7 +867,11 @@
             }
             // if copy is larger than button width use "# selected"
             else if( !instance.options.showAllPlaceholderOpts && instance.options.replacePlaceholderText && ((placeholderTxt.width() > placeholder.width()) || (selOpts.length != selectVals.length)) ) {
-                placeholderTxt.text( selectVals.length + instance.options.texts.selectedOptions );
+                if (instance.options.texts.selectedOptions.indexOf('#cnt#') !== -1) {
+                    placeholderTxt.text(instance.options.texts.selectedOptions.replace('#cnt#', selectVals.length));
+                } else {
+                    placeholderTxt.text(selectVals.length + instance.options.texts.selectedOptions);
+                }
             }
         },
 
