@@ -1,3 +1,13 @@
+2.4.26 (2026-06-02)
+===================
+jQuery 4 support
+- bugfix initialization check
+
+2.4.25 (2026-03-18)
+===================
+jQuery 4 support
+ - replace $.trim() with String.trim() credit @Zarlok
+
 2.4.24 (2024-11-18)
 ===================
 Add option to always show all selected options

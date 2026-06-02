@@ -1,6 +1,6 @@
 /**
  * Display a nice easy to use multiselect list
- * @Version: 2.4.25
+ * @Version: 2.4.26
  * @Author: Patrick Springstubbe
  * @Contact: @JediNobleclem
  * @Website: springstubbe.us
@@ -107,7 +107,7 @@
         msCounter = msCounter + 1; // increment counter
 
         /* Make sure its a multiselect list */
-        if( !$(this.element).attr('multiple') ) {
+        if( !$(this.element).prop('multiple') ) {
             throw new Error( '[jQuery-MultiSelect] Select list must be a multiselect list in order to use this plugin' );
         }
 
