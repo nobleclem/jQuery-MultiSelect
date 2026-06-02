@@ -70,7 +70,7 @@ $('select[multiple]').multiselect( 'loadOptions', [{
 | - placeholder          | string   | Select options | default text for dropdown      |
 | - search               | string   | Search         | search input placeholder text  |
 | - searchNoResult       | string   | No results     | search results not found text  |
-| - selectedOptions      | string   |  selected      | selected suffix text           |
+| - selectedOptions      | string   |  selected      | text suffix for selected items, supports templating (e.g., #cnt# can be used as a placeholder for the count of selected items).           |
 | - selectAll            | string   | Select all     | select all text                |
 | - unselectAll          | string   | Unselect all   | unselect all text              |
 | - noneSelected         | string   | None Selected  | None selected text             |
