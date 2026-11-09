@@ -770,8 +770,15 @@
         disable: function( status ) {
             status = (typeof status === 'boolean') ? status : true;
             $(this.element).prop( 'disabled', status );
-            $(this.element).siblings('#ms-list-'+ this.listNumber +'.ms-options-wrap').find('button:first-child')
-                .prop( 'disabled', status );
+            var optionsWrap = $(this.element).siblings('#ms-list-'+ this.listNumber +'.ms-options-wrap');
+            optionsWrap.find('button:first-child').prop( 'disabled', status );
+
+            if( status && optionsWrap.hasClass('ms-active') ) {
+                optionsWrap.removeClass('ms-active');
+                if( typeof this.options.onControlClose == 'function' ) {
+                    this.options.onControlClose( this.element );
+                }
+            }
         },
 
         /** PRIVATE FUNCTIONS **/
